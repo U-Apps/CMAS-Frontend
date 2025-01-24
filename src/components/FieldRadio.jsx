@@ -9,6 +9,7 @@ const FieldRadio = ({ label, options, register, errors, name, value }) => (
         <label key={idx} className="flex items-center justify-end gap-2">
           <span className="mb-1">{option}</span>
           <input
+            name={name}
             type="radio"
             value={option}
             {...register(name)}

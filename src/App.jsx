@@ -20,7 +20,7 @@ export default function App() {
         <FormClient
           isOpen={addClient}
           closeForm={closeAddFormClient}
-          schema={addClientSchema}
+          schema={ClientSchema}
           title="إضافة عميل"
         />
       </div> */}

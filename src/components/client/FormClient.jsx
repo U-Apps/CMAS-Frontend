@@ -1,13 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
 import { FaSpinner } from 'react-icons/fa';
-import { useState } from 'react';
 import FieldInput from '../FieldInput';
 import FieldRadio from '../FieldRadio';
+import { useRegisterClient } from '../../queries/clientQuery';
 
 const FormClient = ({ isOpen, closeForm, schema, title }) => {
+  const createClientMutation = useRegisterClient();
+
   const {
     register,
     handleSubmit,
@@ -16,18 +17,8 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
     resolver: zodResolver(schema),
   });
 
-  const [loading, setLoading] = useState(false);
-
-  const onSubmit = (data) => {
-    setLoading(true);
-    try {
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-      toast.error(error?.response?.data?.message || error.message);
-    } finally {
-      setLoading(false);
-    }
+  const handelAddClient = (data) => {
+    createClientMutation.mutate(data);
   };
 
   return (
@@ -44,9 +35,9 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                 </h2>
               </div>
               <div className="p-6 bg-gray-100 rounded-b-lg">
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(handelAddClient)}>
                   <FieldInput
-                    id="name"
+                    id="fullName"
                     label="الاسم"
                     type="text"
                     register={register}
@@ -54,19 +45,28 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                     placeholder="الاسم الكامل"
                   />
                   <FieldInput
-                    id="email"
+                    id="Email"
                     label="البريد الإلكتروني"
                     type="email"
                     register={register}
                     errors={errors}
                     placeholder="example@email.com"
                   />
-                  <FieldRadio
-                    name="customerType"
-                    label="نوع العميل"
-                    options={['منفرد', 'شركة']}
+                  <FieldInput
+                    id="PhoneNumber"
+                    label="رقم الهاتف"
+                    type="tel"
                     register={register}
                     errors={errors}
+                    placeholder="73XXXXXXX"
+                  />
+                  <FieldRadio
+                    name="clientType"
+                    label="نوع العميل"
+                    options={['منفرد', 'منظمة']}
+                    register={register}
+                    errors={errors}
+                    value="منفرد"
                   />
 
                   <div className="flex justify-end space-x-4">
@@ -74,15 +74,16 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                       type="button"
                       onClick={closeForm}
                       className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition"
-                      hidden={loading}
+                      hidden={createClientMutation.isPending}
                     >
                       إلغاء
                     </button>
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
+                      disabled={createClientMutation.isPending}
                     >
-                      {loading ? (
+                      {createClientMutation.isPending ? (
                         <FaSpinner className="animate-spin" size={26} />
                       ) : (
                         'حفظ'
@@ -100,3 +101,21 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
 };
 
 export default FormClient;
+
+{
+  /* <div className="relative">
+        <button
+          onClick={openAddFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          إضافة بيانات
+        </button>
+
+        <FormClient
+          isOpen={addClient}
+          closeForm={closeAddFormClient}
+          schema={addClientSchema}
+          title="إضافة عميل"
+        />
+      </div> */
+}
