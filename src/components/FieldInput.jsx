@@ -2,6 +2,7 @@
 const FieldInput = ({
   id,
   label,
+  value,
   type = 'text',
   register,
   errors,
@@ -18,6 +19,7 @@ const FieldInput = ({
       id={id}
       name={id}
       type={type}
+      value={value}
       {...register(id)}
       className="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-right"
       placeholder={placeholder}

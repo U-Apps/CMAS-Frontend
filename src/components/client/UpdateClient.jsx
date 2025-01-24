@@ -4,9 +4,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { FaSpinner } from 'react-icons/fa';
 import { useState } from 'react';
-import FieldInput from './FieldInput';
+import FieldInput from '../FieldInput';
+import FieldRadio from '../FieldRadio';
 
-const ReusableFormModal = ({ isOpen, closeForm, schema, title }) => {
+const FormClient = ({ isOpen, closeForm, schema, title, value }) => {
   const {
     register,
     handleSubmit,
@@ -45,12 +46,30 @@ const ReusableFormModal = ({ isOpen, closeForm, schema, title }) => {
               <div className="p-6 bg-gray-100 rounded-b-lg">
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <FieldInput
+                    id="name"
+                    label="الاسم"
+                    type="text"
+                    register={register}
+                    errors={errors}
+                    placeholder="الاسم الكامل"
+                    value={value.name}
+                  />
+                  <FieldInput
                     id="email"
                     label="البريد الإلكتروني"
                     type="email"
                     register={register}
                     errors={errors}
                     placeholder="example@email.com"
+                    value={value.number}
+                  />
+                  <FieldRadio
+                    name="customerType"
+                    label="نوع العميل"
+                    options={['منفرد', 'شركة']}
+                    register={register}
+                    errors={errors}
+                    value={value.clientType}
                   />
 
                   <div className="flex justify-end space-x-4">
@@ -69,7 +88,7 @@ const ReusableFormModal = ({ isOpen, closeForm, schema, title }) => {
                       {loading ? (
                         <FaSpinner className="animate-spin" size={26} />
                       ) : (
-                        'إضافة'
+                        'حفظ'
                       )}
                     </button>
                   </div>
@@ -83,4 +102,4 @@ const ReusableFormModal = ({ isOpen, closeForm, schema, title }) => {
   );
 };
 
-export default ReusableFormModal;
+export default FormClient;

@@ -1,9 +1,8 @@
 import { create } from 'zustand';
+import createClientSlice from './client-slice';
 
-const useStore = create((set) => ({
-  isOpen: false,
-  openForm: () => set({ isOpen: true }),
-  closeForm: () => set({ isOpen: false }),
+const useStore = create((...a) => ({
+  ...createClientSlice(...a),
 }));
 
 export default useStore;

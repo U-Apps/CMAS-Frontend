@@ -1,23 +1,22 @@
 import { addClientSchema } from './validations/client';
-import ReusableFormModal from './components/ui/ReusableFormModal';
 import useStore from './store';
+import FormClient from './components/client/FormClient';
 
 export default function App() {
-  const { isOpen, openForm, closeForm } = useStore();
-
+  const { addClient, openAddFormClient, closeAddFormClient } = useStore();
   return (
     <>
       <div className="relative">
         <button
-          onClick={openForm}
+          onClick={openAddFormClient}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
 
-        <ReusableFormModal
-          isOpen={isOpen}
-          closeForm={closeForm}
+        <FormClient
+          isOpen={addClient}
+          closeForm={closeAddFormClient}
           schema={addClientSchema}
           title="إضافة عميل"
         />
