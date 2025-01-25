@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {Navigate, useNavigate, useNavigation } from "react-router-dom";
+import FilterType from "./ui/FilterType";
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
+  // const navigate=useNavigate();
+ 
 
   const handleDelete = (id) => {
     // Implement delete functionality here
@@ -15,7 +17,7 @@ const ClientsTable = () => {
 
   useEffect(() => {
     axios
-      .get("http://constructionmanagementassistant.runasp.net")
+      .get("https://jsonplaceholder.typicode.com/users")
       .then((response) => {
         setClients(response.data);
         setLoading(false);
@@ -26,14 +28,32 @@ const ClientsTable = () => {
       });
   }, []);
 
+
+  //Yamani code 
+  const [filterSelected,setFilterSelected]=useState('all');
+  const FilterResult=clients.filter((client)=>{
+    if(filterSelected=='person')return client.type==='person'
+    else if(filterSelected=='company')return client.type==='company'
+    else{
+      return true;  // return all clients if no filter selected
+    }
+  })
+  const HandelValueSelect=(filter)=>{
+setFilterSelected(filter);
+console.log(filter);
+  }
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
+        
         <h1 className="text-2xl font-bold mb-4 text-gray-800">قائمة العملاء</h1>
         <div className="overflow-x-auto">
+        <FilterType HandelValueSelect={HandelValueSelect} />
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>
@@ -49,7 +69,7 @@ const ClientsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {clients.map((client) => (
+              {FilterResult.map((client) => (
                 <tr key={client.id} className="even:bg-gray-100">
                   <td className="px-4 py-2 border text-center text-gray-700">
                     {client.fullName}
