@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { FaFilter } from 'react-icons/fa'
 export default function FilterType({HandelValueSelect}) {
     // const [isOpenMenu,setIsOpenMenu] =useState(false)
@@ -38,8 +37,9 @@ export default function FilterType({HandelValueSelect}) {
       //     </div>
          
       //  </div>
-  <div>
-<select name="filter" id="" onChange={SelectChangedValue} >
+  <div className='flex w-[200px] border border-gray-300 px-2 relative rounded-lg   ' >
+  <FaFilter className='absolute top-[12px] right-2 ' color='gray' />
+<select name="filter" id="" onChange={SelectChangedValue} className='appearance-none px-2 py-2   w-[200px] text-center outline-none ' >
 <option value="all">all</option>
 <option value="person">person</option>
 <option value="company">company</option>

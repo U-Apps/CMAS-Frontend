@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import {Navigate, useNavigate, useNavigation } from "react-router-dom";
 import FilterType from "./ui/FilterType";
+import SearchInput from "./ui/SearchInput";
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
@@ -29,7 +30,7 @@ const ClientsTable = () => {
   }, []);
 
 
-  //Yamani code 
+  //Yamani code for filter 
   const [filterSelected,setFilterSelected]=useState('all');
   const FilterResult=clients.filter((client)=>{
     if(filterSelected=='person')return client.type==='person'
@@ -43,6 +44,12 @@ setFilterSelected(filter);
 console.log(filter);
   }
 
+  // for search 
+  const [searchValue, setSearchValue] = useState("");
+  FilterResult.filter((client)=>{
+    return client.name.toLowerCase().includes(searchValue.toLowerCase()) ;
+  })
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -51,9 +58,15 @@ console.log(filter);
       
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
         
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">قائمة العملاء</h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">قائمة العملاء</h1>
         <div className="overflow-x-auto">
-        <FilterType HandelValueSelect={HandelValueSelect} />
+          <div className="flex justify-end w-full  py-1 px-2 gap-x-4 ">
+                    <FilterType HandelValueSelect={HandelValueSelect} />
+                    <SearchInput setSearchValue={setSearchValue} />
+                  
+                    <button className="btn py-1 px-3 rounded-lg bg-blue-500 text-white hover:bg-opacity-[0.30] ">Adding client</button>
+
+          </div>
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>
