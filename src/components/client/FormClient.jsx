@@ -1,7 +1,6 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FaSpinner } from 'react-icons/fa';
 import FieldInput from '../FieldInput';
 import FieldRadio from '../FieldRadio';
 import { useRegisterClient } from '../../queries/clientQuery';
@@ -13,12 +12,14 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm({
     resolver: zodResolver(schema),
   });
 
   const handelAddClient = (data) => {
     createClientMutation.mutate(data);
+    reset();
   };
 
   return (
@@ -83,11 +84,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
                       disabled={createClientMutation.isPending}
                     >
-                      {createClientMutation.isPending ? (
-                        <FaSpinner className="animate-spin" size={26} />
-                      ) : (
-                        'حفظ'
-                      )}
+                      حفظ
                     </button>
                   </div>
                 </form>
@@ -102,20 +99,52 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
 
 export default FormClient;
 
-{
-  /* <div className="relative">
-        <button
-          onClick={openAddFormClient}
-          className="bg-blue-500 text-white p-2 rounded-md"
-        >
-          إضافة بيانات
-        </button>
+// {
+//   import { ClientSchema } from './validations/client';
+//   import useStore from './store';
+//   import FormClient from './components/client/FormClient';
+//   import UpdateClient from './components/client/UpdateClient';
+//   export default function App() {
+//     const {
+//       addClient,
+//       updateClient,
+//       openAddFormClient,
+//       closeAddFormClient,
+//       openUpdateFormClient,
+//       closeUpdateFormClient,
+//     } = useStore();
+//     return (
+//       <>
+//         <div className="relative">
+//           <button
+//             onClick={openAddFormClient}
+//             className="bg-blue-500 text-white p-2 rounded-md"
+//           >
+//             إضافة بيانات
+//           </button>
 
-        <FormClient
-          isOpen={addClient}
-          closeForm={closeAddFormClient}
-          schema={addClientSchema}
-          title="إضافة عميل"
-        />
-      </div> */
-}
+//           <button
+//             onClick={openUpdateFormClient}
+//             className="bg-blue-500 text-white p-2 rounded-md"
+//           >
+//             تعديل بيانات
+//           </button>
+
+//           <FormClient
+//             isOpen={addClient}
+//             closeForm={closeAddFormClient}
+//             schema={ClientSchema}
+//             title="إضافة عميل"
+//           />
+//           <UpdateClient
+//             isOpen={updateClient}
+//             closeForm={closeUpdateFormClient}
+//             schema={ClientSchema}
+//             title="تعديل عميل"
+//           />
+//         </div>
+//       </>
+//     );
+//   }
+
+// }

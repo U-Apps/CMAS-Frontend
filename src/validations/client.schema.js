@@ -23,4 +23,5 @@ export const ClientSchema = z.object({
   clientType: z.enum(['منفرد', 'منظمة'], {
     required_error: 'يجب اختيار نوع العميل',
   }),
+  id: z.number().optional(),
 });

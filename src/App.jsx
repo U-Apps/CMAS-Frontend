@@ -1,27 +1,20 @@
-// import { addClientSchema } from "./validations/client";
-// import useStore from "./store";
-// import FormClient from "./components/client/FormClient";
-import ClientTable from "./components/ClientTable";
-export default function App() {
-  // const { addClient, openAddFormClient, closeAddFormClient } = useStore();
-  return (
-    <>
-      <ClientTable />
-      {/* <div className="relative">
-        <button
-          onClick={openAddFormClient}
-          className="bg-blue-500 text-white p-2 rounded-md"
-        >
-          إضافة بيانات
-        </button>
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-        <FormClient
-          isOpen={addClient}
-          closeForm={closeAddFormClient}
-          schema={addClientSchema}
-          title="إضافة عميل"
-        />
-      </div> */}
-    </>
+import { Toaster } from 'sonner';
+import ClientsTable from './components/ClientTable';
+
+function App() {
+  return (
+    <main>
+      <div>
+        <Routes>
+          <Route path="/" element={<Navigate to="/client" />} />
+          <Route path="/client" element={<ClientsTable />} />
+        </Routes>
+      </div>
+      <Toaster richColors position="top-center" />
+    </main>
   );
 }
+
+export default App;
