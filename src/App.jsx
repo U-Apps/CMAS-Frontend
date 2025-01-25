@@ -1,6 +1,7 @@
-import { addClientSchema } from './validations/client';
+import { ClientSchema } from './validations/client';
 import useStore from './store';
 import FormClient from './components/client/FormClient';
+import { Toaster } from 'sonner';
 
 export default function App() {
   const { addClient, openAddFormClient, closeAddFormClient } = useStore();
@@ -17,9 +18,10 @@ export default function App() {
         <FormClient
           isOpen={addClient}
           closeForm={closeAddFormClient}
-          schema={addClientSchema}
+          schema={ClientSchema}
           title="إضافة عميل"
         />
+        <Toaster richColors />
       </div>
     </>
   );
