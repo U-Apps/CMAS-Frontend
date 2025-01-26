@@ -72,7 +72,7 @@ const ClientsTable = () => {
       <div className="relative">
         <button
           onClick={openAddFormClient}
-          className="bg-blue-500 text-white p-2 rounded-md"
+          className="bg-blue-500 text-white p-2 rounded-md mr-2"
         >
           إضافة بيانات
         </button>
@@ -103,11 +103,11 @@ const ClientsTable = () => {
           قائمة العملاء
         </h1>
         <div className="overflow-x-auto">
-          <div className="flex justify-end w-full  py-1 px-2 gap-x-4 ">
+          <div className="flex justify-end w-full py-1 px-2 gap-x-4">
             <FilterType HandelValueSelect={HandelValueSelect} />
             <SearchInput setSearchValue={setSearchValue} />
 
-            <button className="btn py-1 px-3 rounded-lg bg-blue-500 text-white hover:bg-opacity-[0.30] ">
+            <button className="btn py-1 px-3 rounded-lg bg-blue-500 text-white hover:bg-opacity-[0.30]">
               Adding client
             </button>
           </div>

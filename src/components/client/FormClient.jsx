@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import FieldInput from '../FieldInput';
-import FieldRadio from '../FieldRadio';
-import { useRegisterClient } from '../../queries/clientQuery';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FieldInput from "../FieldInput";
+import FieldRadio from "../FieldRadio";
+import { useRegisterClient } from "../../queries/clientQuery";
 
 const FormClient = ({ isOpen, closeForm, schema, title }) => {
   const createClientMutation = useRegisterClient();
@@ -20,7 +20,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
   const handelAddClient = (data) => {
     const mappedData = {
       ...data,
-      clientType: data.clientType === 'فرد' ? 1 : 2,
+      clientType: data.clientType === "فرد" ? 1 : 2,
     };
 
     createClientMutation.mutate(mappedData);
@@ -36,7 +36,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
           <div className="fixed inset-0 flex items-center justify-center z-30">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
               <div className="bg-white p-4 rounded-t-lg">
-                <h2 className="text-xl font-bold text-gray-800 text-center">
+                <h2 className="text-xl font-bold text-center bg-blue-500 text-white px-4 py-2 rounded-lg mb-0 hover:bg-blue-600 transition-all">
                   {title}
                 </h2>
               </div>
@@ -69,7 +69,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                   <FieldRadio
                     name="clientType"
                     label="نوع العميل"
-                    options={['فرد', 'شركة']}
+                    options={["فرد", "شركة"]}
                     register={register}
                     errors={errors}
                     value="فرد"
@@ -79,7 +79,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                     <button
                       type="button"
                       onClick={closeForm}
-                      className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition"
+                      className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition ml-2"
                       hidden={createClientMutation.isPending}
                     >
                       إلغاء

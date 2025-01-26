@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { useGetClients } from '../queries/clientQuery';
-import useStore from '../store';
-import FormClient from '../components/client/FormClient';
-import UpdateClient from '../components/client/UpdateClient';
+import { useState } from "react";
+import { useGetClients } from "../queries/clientQuery";
+import useStore from "../store";
+import FormClient from "../components/client/FormClient";
+import UpdateClient from "../components/client/UpdateClient";
 import {
   addClientSchema,
   updateClientSchema,
-} from '../validations/client.schema';
+} from "../validations/client.schema";
 
 const Clients = () => {
   const {
@@ -49,14 +49,16 @@ const Clients = () => {
 
   return (
     <div className="p-4">
-      <div className="relative">
+      <h1 className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-xl font-bold mb-4 hover:bg-blue-600 transition-all">
+        صفحة العملاء
+      </h1>{" "}
+      <div className="relative flex justify-end mb-4">
         <button
           onClick={openAddFormClient}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
-
         <FormClient
           isOpen={addClient}
           closeForm={closeAddFormClient}
@@ -108,7 +110,7 @@ const Clients = () => {
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
                     onClick={() => handelUpdate(client)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
+                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 ml-2"
                   >
                     تعديل
                   </button>
@@ -130,15 +132,14 @@ const Clients = () => {
           )}
         </tbody>
       </table>
-
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePreviousPage}
           disabled={pageClient === 1 || isLoading}
           className={`px-4 py-2 rounded ${
             pageClient === 1 || isLoading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
           }`}
         >
           السابق
@@ -148,8 +149,8 @@ const Clients = () => {
           disabled={pageClient * 10 >= totalCount || isLoading}
           className={`px-4 py-2 rounded ${
             pageClient * 10 >= totalCount || isLoading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
+              ? "bg-gray-300 cursor-not-allowed"
+              : "bg-blue-500 text-white hover:bg-blue-600"
           }`}
         >
           التالي

@@ -6,8 +6,7 @@ const FieldRadio = ({ label, options, register, errors, name, value }) => (
     </legend>
     <div className="flex flex-col space-y-2">
       {options.map((option, idx) => (
-        <label key={idx} className="flex items-center justify-end gap-2">
-          <span className="mb-1">{option}</span>
+        <label key={idx} className="flex items-center justify-start gap-2">
           <input
             name={name}
             type="radio"
@@ -15,6 +14,7 @@ const FieldRadio = ({ label, options, register, errors, name, value }) => (
             {...register(name)}
             defaultChecked={value === option}
           />
+          <span className="mb-1">{option}</span>
         </label>
       ))}
       {errors[name] && (
