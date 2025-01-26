@@ -35,12 +35,12 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
 
           <div className="fixed inset-0 flex items-center justify-center z-30">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
-              <div className="bg-gray-200 p-4 rounded-t-lg">
+              <div className="bg-white p-4 rounded-t-lg">
                 <h2 className="text-xl font-bold text-gray-800 text-center">
                   {title}
                 </h2>
               </div>
-              <div className="p-6 bg-gray-100 rounded-b-lg">
+              <div className="p-6 bg-white rounded-b-lg">
                 <form onSubmit={handleSubmit(handelAddClient)}>
                   <FieldInput
                     id="fullName"
