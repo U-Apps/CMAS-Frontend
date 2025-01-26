@@ -1,10 +1,26 @@
 import { useState } from 'react';
 import { useGetClients } from '../queries/clientQuery';
+import useStore from '../store';
+import FormClient from '../components/client/FormClient';
+import UpdateClient from '../components/client/UpdateClient';
+import {
+  addClientSchema,
+  updateClientSchema,
+} from '../validations/client.schema';
 
 const Clients = () => {
   const [pageNumber, setPageNumber] = useState(1);
+  const {
+    addClient,
+    updateClient,
+    openAddFormClient,
+    closeAddFormClient,
+    openUpdateFormClient,
+    closeUpdateFormClient,
+  } = useStore();
 
   const { data, isLoading } = useGetClients(pageNumber);
+  const [clients, setClients] = useState([]);
 
   const clientsData = data?.data?.items || [];
   const totalCount = data?.data?.totalCount || 0;
@@ -21,16 +37,44 @@ const Clients = () => {
     }
   };
 
-  const handleEdit = (id) => {
-    console.log(`Editing client with id: ${id}`);
-  };
-
   const handleDelete = (id) => {
     console.log(`Deleting client with id: ${id}`);
   };
+  {
+    console.log(clientsData);
+  }
 
   return (
     <div className="p-4">
+      <div className="relative">
+        <button
+          onClick={openAddFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          إضافة بيانات
+        </button>
+
+        <button
+          onClick={openUpdateFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          تعديل بيانات
+        </button>
+
+        <FormClient
+          isOpen={addClient}
+          closeForm={closeAddFormClient}
+          schema={addClientSchema}
+          title="إضافة عميل"
+        />
+        <UpdateClient
+          client={clients}
+          isOpen={updateClient}
+          closeForm={closeUpdateFormClient}
+          schema={updateClientSchema}
+          title="تعديل عميل"
+        />
+      </div>
       <table className="table-auto border-collapse w-full border border-gray-300 shadow-md">
         <thead>
           <tr className="bg-gray-100">
@@ -67,7 +111,7 @@ const Clients = () => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
-                    onClick={() => handleEdit(client.id)}
+                    onClick={() => setClients(client)}
                     className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
                   >
                     تعديل

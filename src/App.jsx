@@ -1,7 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { Toaster } from 'sonner';
-// import ClientsTable from './components/ClientTable';
 import Clients from './pages/client';
 
 function App() {

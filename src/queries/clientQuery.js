@@ -7,14 +7,13 @@ export function useGetClients(pageNumber) {
   return useQuery({
     queryKey: ['clients', pageNumber],
     queryFn: () => getClients(pageNumber),
-
     staleTime: 600000,
     cacheTime: 1800000,
   });
 }
 
 export function useRegisterClient() {
-  const { closeUpdateFormClient } = useStore();
+  const { closeAddFormClient } = useStore();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -25,7 +24,7 @@ export function useRegisterClient() {
     },
     onSuccess: () => {
       toast.success('تمت الإضافة بنجاح');
-      closeUpdateFormClient();
+      closeAddFormClient();
     },
     onError: () => {
       toast.error('حدث خطأ ما');
