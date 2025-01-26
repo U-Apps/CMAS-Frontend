@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FieldInput from '../FieldInput';
 import { useUpdateClient } from '../../queries/clientQuery';
+import { useEffect } from 'react';
 
 const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
   const updateClientMutation = useUpdateClient();
-
   const {
     register,
     handleSubmit,
@@ -14,15 +14,20 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
     reset,
   } = useForm({
     resolver: zodResolver(schema),
-    defaultValues: {
-      id: client.id,
-      fullName: client.fullName,
-      Email: client.Email,
-      PhoneNumber: client.PhoneNumber,
-    },
   });
 
-  const handelAddClient = (data) => {
+  useEffect(() => {
+    if (client) {
+      reset({
+        id: client.id,
+        fullName: client.fullName,
+        email: client.email,
+        phoneNumber: client.phoneNumber,
+      });
+    }
+  }, [client, reset]);
+
+  const handelUpdateClient = (data) => {
     updateClientMutation.mutate(data);
     reset();
   };
@@ -41,7 +46,7 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                 </h2>
               </div>
               <div className="p-6 bg-white rounded-b-lg">
-                <form onSubmit={handleSubmit(handelAddClient)}>
+                <form onSubmit={handleSubmit(handelUpdateClient)}>
                   <FieldInput
                     id="fullName"
                     label="الاسم"
@@ -51,7 +56,7 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                     placeholder="الاسم الكامل"
                   />
                   <FieldInput
-                    id="Email"
+                    id="email"
                     label="البريد الإلكتروني"
                     type="email"
                     register={register}
@@ -59,7 +64,7 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                     placeholder="example@email.com"
                   />
                   <FieldInput
-                    id="PhoneNumber"
+                    id="phoneNumber"
                     label="رقم الهاتف"
                     type="tel"
                     register={register}
@@ -79,9 +84,11 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                      disabled={updateClientMutation.isPending}
+                      disabled={updateClientMutation.isLoading}
                     >
-                      حفظ
+                      {updateClientMutation.isLoading
+                        ? 'جارٍ التحميل...'
+                        : 'حفظ'}
                     </button>
                   </div>
                 </form>

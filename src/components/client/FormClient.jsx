@@ -20,7 +20,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
   const handelAddClient = (data) => {
     const mappedData = {
       ...data,
-      clientType: data.clientType === 'منفرد' ? 1 : 2,
+      clientType: data.clientType === 'فرد' ? 1 : 2,
     };
 
     createClientMutation.mutate(mappedData);
@@ -51,7 +51,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                     placeholder="الاسم الكامل"
                   />
                   <FieldInput
-                    id="Email"
+                    id="email"
                     label="البريد الإلكتروني"
                     type="email"
                     register={register}
@@ -59,7 +59,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                     placeholder="example@email.com"
                   />
                   <FieldInput
-                    id="PhoneNumber"
+                    id="phoneNumber"
                     label="رقم الهاتف"
                     type="tel"
                     register={register}
@@ -69,10 +69,10 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                   <FieldRadio
                     name="clientType"
                     label="نوع العميل"
-                    options={['منفرد', 'منظمة']}
+                    options={['فرد', 'شركة']}
                     register={register}
                     errors={errors}
-                    value="منفرد"
+                    value="فرد"
                   />
 
                   <div className="flex justify-end space-x-4">

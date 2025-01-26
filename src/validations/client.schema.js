@@ -8,19 +8,19 @@ export const addClientSchema = z.object({
     })
     .nonempty('الاسم مطلوب')
     .min(3, 'يجب أن يكون الاسم 3 أحرف على الأقل'),
-  Email: z
+  email: z
     .string({
       required_error: 'البريد الإلكتروني مطلوب',
     })
     .email('يجب إدخال بريد إلكتروني صالح')
     .nonempty('البريد الإلكتروني مطلوب'),
-  PhoneNumber: z
+  phoneNumber: z
     .string({
       required_error: 'رقم الهاتف مطلوب',
       invalid_type_error: 'رقم الهاتف يجب أن يكون نصاً',
     })
     .regex(/^\d{9}$/, 'رقم الهاتف يجب أن يتكون من 9 أرقام '),
-  clientType: z.enum(['منفرد', 'منظمة'], {
+  clientType: z.enum(['فرد', 'شركة'], {
     required_error: 'يجب اختيار نوع العميل',
   }),
   id: z.number().optional(),
@@ -34,13 +34,13 @@ export const updateClientSchema = z.object({
     })
     .nonempty('الاسم مطلوب')
     .min(3, 'يجب أن يكون الاسم 3 أحرف على الأقل'),
-  Email: z
+  email: z
     .string({
       required_error: 'البريد الإلكتروني مطلوب',
     })
     .email('يجب إدخال بريد إلكتروني صالح')
     .nonempty('البريد الإلكتروني مطلوب'),
-  PhoneNumber: z
+  phoneNumber: z
     .string({
       required_error: 'رقم الهاتف مطلوب',
       invalid_type_error: 'رقم الهاتف يجب أن يكون نصاً',

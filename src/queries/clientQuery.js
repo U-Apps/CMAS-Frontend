@@ -13,14 +13,16 @@ export function useGetClients(pageNumber) {
 }
 
 export function useRegisterClient() {
-  const { closeAddFormClient } = useStore();
+  const { closeAddFormClient, pageClient } = useStore();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data) => registerClient(data),
 
     onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: 'clients' });
+      await queryClient.invalidateQueries({
+        queryKey: ['clients', pageClient],
+      });
     },
     onSuccess: () => {
       toast.success('تمت الإضافة بنجاح');
@@ -33,14 +35,16 @@ export function useRegisterClient() {
 }
 
 export function useUpdateClient() {
-  const { closeUpdateFormClient } = useStore();
+  const { closeUpdateFormClient, pageClient } = useStore();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data) => updateClient(data),
 
     onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: 'clients' });
+      await queryClient.invalidateQueries({
+        queryKey: ['clients', pageClient],
+      });
     },
     onSuccess: () => {
       toast.success('تمت التعديل بنجاح');

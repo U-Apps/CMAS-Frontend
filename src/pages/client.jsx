@@ -9,40 +9,43 @@ import {
 } from '../validations/client.schema';
 
 const Clients = () => {
-  const [pageNumber, setPageNumber] = useState(1);
   const {
+    pageClient,
     addClient,
     updateClient,
     openAddFormClient,
     closeAddFormClient,
     openUpdateFormClient,
     closeUpdateFormClient,
+    setPageClient,
   } = useStore();
 
-  const { data, isLoading } = useGetClients(pageNumber);
+  const { data, isLoading } = useGetClients(pageClient);
   const [clients, setClients] = useState([]);
 
   const clientsData = data?.data?.items || [];
   const totalCount = data?.data?.totalCount || 0;
 
   const handleNextPage = () => {
-    if (pageNumber * 10 < totalCount) {
-      setPageNumber((prev) => prev + 1);
+    if (pageClient * 10 < totalCount) {
+      setPageClient(pageClient + 1);
     }
   };
 
   const handlePreviousPage = () => {
-    if (pageNumber > 1) {
-      setPageNumber((prev) => prev - 1);
+    if (pageClient > 1) {
+      setPageClient(pageClient - 1);
     }
+  };
+
+  const handelUpdate = (data) => {
+    setClients(data);
+    openUpdateFormClient();
   };
 
   const handleDelete = (id) => {
     console.log(`Deleting client with id: ${id}`);
   };
-  {
-    console.log(clientsData);
-  }
 
   return (
     <div className="p-4">
@@ -52,13 +55,6 @@ const Clients = () => {
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
-        </button>
-
-        <button
-          onClick={openUpdateFormClient}
-          className="bg-blue-500 text-white p-2 rounded-md"
-        >
-          تعديل بيانات
         </button>
 
         <FormClient
@@ -111,7 +107,7 @@ const Clients = () => {
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
-                    onClick={() => setClients(client)}
+                    onClick={() => handelUpdate(client)}
                     className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600"
                   >
                     تعديل
@@ -138,9 +134,9 @@ const Clients = () => {
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePreviousPage}
-          disabled={pageNumber === 1 || isLoading}
+          disabled={pageClient === 1 || isLoading}
           className={`px-4 py-2 rounded ${
-            pageNumber === 1 || isLoading
+            pageClient === 1 || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
@@ -149,9 +145,9 @@ const Clients = () => {
         </button>
         <button
           onClick={handleNextPage}
-          disabled={pageNumber * 10 >= totalCount || isLoading}
+          disabled={pageClient * 10 >= totalCount || isLoading}
           className={`px-4 py-2 rounded ${
-            pageNumber * 10 >= totalCount || isLoading
+            pageClient * 10 >= totalCount || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
