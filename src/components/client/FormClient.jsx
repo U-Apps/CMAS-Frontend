@@ -18,7 +18,12 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
   });
 
   const handelAddClient = (data) => {
-    createClientMutation.mutate(data);
+    const mappedData = {
+      ...data,
+      clientType: data.clientType === 'منفرد' ? 1 : 2,
+    };
+
+    createClientMutation.mutate(mappedData);
     reset();
   };
 

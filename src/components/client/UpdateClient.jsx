@@ -2,7 +2,6 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FieldInput from '../FieldInput';
-import FieldRadio from '../FieldRadio';
 import { useUpdateClient } from '../../queries/clientQuery';
 
 const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
@@ -20,7 +19,6 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
       fullName: client.fullName,
       Email: client.Email,
       PhoneNumber: client.PhoneNumber,
-      clientType: client.clientType,
     },
   });
 
@@ -67,13 +65,6 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                     register={register}
                     errors={errors}
                     placeholder="73XXXXXXX"
-                  />
-                  <FieldRadio
-                    name="clientType"
-                    label="نوع العميل"
-                    options={['منفرد', 'منظمة']}
-                    register={register}
-                    errors={errors}
                   />
 
                   <div className="flex justify-end space-x-4">

@@ -2,12 +2,26 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import FilterType from './ui/FilterType';
 import SearchInput from './ui/SearchInput';
+import useStore from '../store';
+import FormClient from './client/FormClient';
+import UpdateClient from './client/UpdateClient';
+import {
+  addClientSchema,
+  updateClientSchema,
+} from '../validations/client.schema';
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // const navigate=useNavigate();
+  const {
+    addClient,
+    updateClient,
+    openAddFormClient,
+    closeAddFormClient,
+    openUpdateFormClient,
+    closeUpdateFormClient,
+  } = useStore();
 
   const handleDelete = (id) => {
     // Implement delete functionality here
@@ -16,7 +30,9 @@ const ClientsTable = () => {
 
   useEffect(() => {
     axios
-      .get('https://jsonplaceholder.typicode.com/users')
+      .get(
+        'http://constructionmanagementassistant.runasp.net/api/v1/Clients?pageNumber=1&pageSize=10'
+      )
 
       .then((response) => {
         setClients(response.data);
@@ -53,6 +69,35 @@ const ClientsTable = () => {
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      <div className="relative">
+        <button
+          onClick={openAddFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          إضافة بيانات
+        </button>
+
+        <button
+          onClick={openUpdateFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          تعديل بيانات
+        </button>
+
+        <FormClient
+          isOpen={addClient}
+          closeForm={closeAddFormClient}
+          schema={addClientSchema}
+          title="إضافة عميل"
+        />
+        <UpdateClient
+          client={clients}
+          isOpen={updateClient}
+          closeForm={closeUpdateFormClient}
+          schema={updateClientSchema}
+          title="تعديل عميل"
+        />
+      </div>
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
         <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">
           قائمة العملاء
@@ -81,13 +126,13 @@ const ClientsTable = () => {
               </tr>
             </thead>
             <tbody>
-              {FilterResult.map((client) => (
+              {clients.map((client) => (
                 <tr key={client.id} className="even:bg-gray-100">
                   <td className="px-4 py-2 border text-center text-gray-700">
-                    {client.fullName}
+                    {client.phoneNumber}
                   </td>
                   <td className="px-4 py-2 border text-center text-gray-700">
-                    {client.jobType}
+                    {client.email}
                   </td>
                   <td className="px-4 py-2 border text-center">
                     <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition mx-1">

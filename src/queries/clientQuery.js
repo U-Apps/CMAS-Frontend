@@ -1,7 +1,17 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { registerClient, updateClient } from '../API/clientAPI';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getClients, registerClient, updateClient } from '../API/clientAPI';
 import { toast } from 'sonner';
 import useStore from '../store';
+
+export function useGetClients(pageNumber) {
+  return useQuery({
+    queryKey: ['clients', pageNumber],
+    queryFn: () => getClients(pageNumber),
+
+    staleTime: 600000,
+    cacheTime: 1800000,
+  });
+}
 
 export function useRegisterClient() {
   const { closeUpdateFormClient } = useStore();
