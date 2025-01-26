@@ -1,12 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
   const handleDelete = (id) => {
     // Implement delete functionality here
@@ -55,13 +53,10 @@ const ClientsTable = () => {
                     {client.fullName}
                   </td>
                   <td className="px-4 py-2 border text-center text-gray-700">
-                    {client.jobType}
+                    {client.clientType}
                   </td>
                   <td className="px-4 py-2 border text-center">
-                    <button
-                      onClick={() => navigate(`/edit/${client.id}`)}
-                      className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition mx-1"
-                    >
+                    <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition mx-1">
                       تعديل
                     </button>
                     <button
