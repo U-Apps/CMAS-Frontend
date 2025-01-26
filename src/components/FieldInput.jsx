@@ -21,7 +21,7 @@ const FieldInput = ({
       type={type}
       value={value}
       {...register(id)}
-      className="w-full p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-right"
+      className="w-full bg-gray-100 p-3 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-right"
       placeholder={placeholder}
     />
     {errors[id] && (

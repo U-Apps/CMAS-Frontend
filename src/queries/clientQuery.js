@@ -1,39 +1,57 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { registerClient } from '../API/clientAPI';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { getClients, registerClient, updateClient } from '../API/clientAPI';
 import { toast } from 'sonner';
 import useStore from '../store';
 
+export function useGetClients(pageNumber) {
+  return useQuery({
+    queryKey: ['clients', pageNumber],
+    queryFn: () => getClients(pageNumber),
+    staleTime: 600000,
+    cacheTime: 1800000,
+  });
+}
+
 export function useRegisterClient() {
+  const { closeAddFormClient, pageClient } = useStore();
   const queryClient = useQueryClient();
-  const { closeAddFormClient } = useStore();
 
   return useMutation({
     mutationFn: (data) => registerClient(data),
 
-    onSettled: async (_, error) => {
-      await queryClient.invalidateQueries({ queryKey: 'clients' });
-
-      if (error) {
-        toast.error('حدث خطأ أثناء تسجيل العميل');
-      } else {
-        toast.success('تم تسجيل العميل بنجاح');
-        closeAddFormClient();
-      }
-    },
-
-    onMutate: (data) => {
-      const promise = () =>
-        new Promise((resolve) =>
-          setTimeout(() => resolve({ name: data.fullName }), 2000)
-        );
-
-      toast.promise(promise(), {
-        loading: 'جاري الإضافة',
-        success: (data) => {
-          return `${data.name} تم إضافة العميل بنجاح`;
-        },
-        error: 'حدث خطأ أثناء إضافة العميل',
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['clients', pageClient],
       });
+    },
+    onSuccess: () => {
+      toast.success('تمت الإضافة بنجاح');
+      closeAddFormClient();
+    },
+    onError: () => {
+      toast.error('حدث خطأ ما');
+    },
+  });
+}
+
+export function useUpdateClient() {
+  const { closeUpdateFormClient, pageClient } = useStore();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (data) => updateClient(data),
+
+    onSettled: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ['clients', pageClient],
+      });
+    },
+    onSuccess: () => {
+      toast.success('تمت التعديل بنجاح');
+      closeUpdateFormClient();
+    },
+    onError: () => {
+      toast.error('حدث خطأ ما');
     },
   });
 }

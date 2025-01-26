@@ -1,10 +1,27 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import FilterType from "./ui/FilterType";
+import SearchInput from "./ui/SearchInput";
+import useStore from "../store";
+import FormClient from "./client/FormClient";
+import UpdateClient from "./client/UpdateClient";
+import {
+  addClientSchema,
+  updateClientSchema,
+} from "../validations/client.schema";
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const {
+    addClient,
+    updateClient,
+    openAddFormClient,
+    closeAddFormClient,
+    openUpdateFormClient,
+    closeUpdateFormClient,
+  } = useStore();
 
   const handleDelete = (id) => {
     // Implement delete functionality here
@@ -13,7 +30,10 @@ const ClientsTable = () => {
 
   useEffect(() => {
     axios
-      .get("http://constructionmanagementassistant.runasp.net")
+      .get(
+        "http://constructionmanagementassistant.runasp.net/api/v1/Clients?pageNumber=1&pageSize=10"
+      )
+
       .then((response) => {
         setClients(response.data);
         setLoading(false);
@@ -24,14 +44,73 @@ const ClientsTable = () => {
       });
   }, []);
 
+  //Yamani code for filter
+  const [filterSelected, setFilterSelected] = useState("all");
+  const FilterResult = clients.filter((client) => {
+    if (filterSelected == "person") return client.type === "person";
+    else if (filterSelected == "company") return client.type === "company";
+    else {
+      return true; // return all clients if no filter selected
+    }
+  });
+  const HandelValueSelect = (filter) => {
+    setFilterSelected(filter);
+    console.log(filter);
+  };
+
+  // for search
+  const [searchValue, setSearchValue] = useState("");
+  FilterResult.filter((client) => {
+    return client.name.toLowerCase().includes(searchValue.toLowerCase());
+  });
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
+      <div className="relative">
+        <button
+          onClick={openAddFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          إضافة بيانات
+        </button>
+
+        <button
+          onClick={openUpdateFormClient}
+          className="bg-blue-500 text-white p-2 rounded-md"
+        >
+          تعديل بيانات
+        </button>
+
+        <FormClient
+          isOpen={addClient}
+          closeForm={closeAddFormClient}
+          schema={addClientSchema}
+          title="إضافة عميل"
+        />
+        <UpdateClient
+          client={clients}
+          isOpen={updateClient}
+          closeForm={closeUpdateFormClient}
+          schema={updateClientSchema}
+          title="تعديل عميل"
+        />
+      </div>
       <div className="max-w-6xl mx-auto bg-white shadow-lg rounded-lg p-6">
-        <h1 className="text-2xl font-bold mb-4 text-gray-800">قائمة العملاء</h1>
+        <h1 className="text-2xl font-bold mb-4 text-gray-800 text-center">
+          قائمة العملاء
+        </h1>
         <div className="overflow-x-auto">
+          <div className="flex justify-end w-full  py-1 px-2 gap-x-4 ">
+            <FilterType HandelValueSelect={HandelValueSelect} />
+            <SearchInput setSearchValue={setSearchValue} />
+
+            <button className="btn py-1 px-3 rounded-lg bg-blue-500 text-white hover:bg-opacity-[0.30] ">
+              Adding client
+            </button>
+          </div>
           <table className="table-auto w-full border-collapse border border-gray-300">
             <thead>
               <tr>
@@ -50,10 +129,10 @@ const ClientsTable = () => {
               {clients.map((client) => (
                 <tr key={client.id} className="even:bg-gray-100">
                   <td className="px-4 py-2 border text-center text-gray-700">
-                    {client.fullName}
+                    {client.phoneNumber}
                   </td>
                   <td className="px-4 py-2 border text-center text-gray-700">
-                    {client.clientType}
+                    {client.email}
                   </td>
                   <td className="px-4 py-2 border text-center">
                     <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition mx-1">
