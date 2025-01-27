@@ -65,7 +65,7 @@ export function useDeleteClient() {
   const { closeDeleteFormClient, pageClient } = useStore();
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id) => deleteClient(id),
+    mutationFn: (fullName) => deleteClient(fullName),
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: ["clients", pageClient],
