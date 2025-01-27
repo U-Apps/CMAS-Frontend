@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect } from "react";
 import FieldInput from "../FieldInput";
 import { useUpdateClient } from "../../queries/clientQuery";
-import { useEffect } from "react";
 
 const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
   const updateClientMutation = useUpdateClient();

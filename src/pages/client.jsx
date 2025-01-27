@@ -6,8 +6,9 @@ import UpdateClient from "../components/client/UpdateClient";
 import {
   addClientSchema,
   updateClientSchema,
+  deleteClientSchema,
 } from "../validations/client.schema";
-// import DeleteClient from "../components/client/DeleteClient";
+import DeleteClient from "../components/client/DeleteClient";
 
 const Clients = () => {
   const {
@@ -18,8 +19,9 @@ const Clients = () => {
     closeAddFormClient,
     openUpdateFormClient,
     closeUpdateFormClient,
-    // openDeleteFormClient,
-    // closeDeleteFormClient,
+    deleteClient,
+    openDeleteFormClient,
+    closeDeleteFormClient,
     setPageClient,
   } = useStore();
 
@@ -46,15 +48,16 @@ const Clients = () => {
     openUpdateFormClient();
   };
 
-  const handleDelete = (id) => {
-    console.log(`Deleting client with id: ${id}`);
+  const handelDelete = (data) => {
+    setClients(data);
+    openDeleteFormClient(data);
   };
 
   return (
     <div className="p-4">
       <h1 className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-xl font-bold mb-4 hover:bg-blue-600 transition-all">
         صفحة العملاء
-      </h1>{" "}
+      </h1>
       <div className="relative flex justify-end mb-4">
         <button
           onClick={openAddFormClient}
@@ -75,7 +78,13 @@ const Clients = () => {
           schema={updateClientSchema}
           title="تعديل عميل"
         />
-        {/* <DeleteClient /> */}
+        <DeleteClient
+          client={clients}
+          isOpen={deleteClient}
+          closeForm={closeDeleteFormClient}
+          schema={deleteClientSchema}
+          title="حذف عميل"
+        />
       </div>
       <table className="table-auto border-collapse w-full border border-gray-300 shadow-md">
         <thead>
@@ -119,7 +128,7 @@ const Clients = () => {
                     تعديل
                   </button>
                   <button
-                    onClick={() => handleDelete(client.id)}
+                    onClick={() => handelDelete(client.fullName)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                   >
                     حذف
