@@ -48,9 +48,9 @@ const Clients = () => {
     openUpdateFormClient();
   };
 
-  const handelDelete = (data) => {
-    setClients(data);
-    openDeleteFormClient(data);
+  const handelDelete = (id) => {
+    setClients(id);
+    openDeleteFormClient(id);
   };
 
   return (
@@ -128,7 +128,7 @@ const Clients = () => {
                     تعديل
                   </button>
                   <button
-                    onClick={() => handelDelete(client.fullName)}
+                    onClick={() => handelDelete(client.id)}
                     className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
                   >
                     حذف

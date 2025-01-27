@@ -15,6 +15,6 @@ export const updateClient = async (data) => {
   await api.put("/api/v1/Clients", data);
 };
 
-export const deleteClient = async (fullName) => {
-  await api.delete("/api/v1/Clients/{fullName}", fullName);
+export const deleteClient = async (id) => {
+  await api.delete("/api/v1/Clients/", id);
 };
