@@ -7,6 +7,7 @@ import {
   addClientSchema,
   updateClientSchema,
 } from "../validations/client.schema";
+// import DeleteClient from "../components/client/DeleteClient";
 
 const Clients = () => {
   const {
@@ -17,6 +18,8 @@ const Clients = () => {
     closeAddFormClient,
     openUpdateFormClient,
     closeUpdateFormClient,
+    // openDeleteFormClient,
+    // closeDeleteFormClient,
     setPageClient,
   } = useStore();
 
@@ -72,6 +75,7 @@ const Clients = () => {
           schema={updateClientSchema}
           title="تعديل عميل"
         />
+        {/* <DeleteClient /> */}
       </div>
       <table className="table-auto border-collapse w-full border border-gray-300 shadow-md">
         <thead>
