@@ -8,6 +8,8 @@ import {
   deleteClientSchema,
 } from '../validations/client.schema';
 import DeleteClient from '../components/client/DeleteClient';
+import SearchInput from '../components/ui/SearchInput';
+import { useState } from 'react';
 
 const Clients = () => {
   const {
@@ -20,11 +22,15 @@ const Clients = () => {
     selectedClient,
   } = useStore();
 
+const [searchInput,setSearchInput]=useState('');
   const { data, isLoading } = useGetClients(pageClient);
-
+  
+const handelSearch=(search)=>{
+  setSearchInput(search);
+}
   const clientsData = data?.data?.items || [];
   const totalCount = data?.data?.totalCount || 0;
-
+const resultData = clientsData.filter((client)=>client.fullName.toLowerCase().includes(searchInput.toLowerCase()));
   const handleNextPage = () => {
     if (pageClient * 10 < totalCount) {
       setPageClient(pageClient + 1);
@@ -52,6 +58,10 @@ const Clients = () => {
       <h1 className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-xl font-bold mb-4 hover:bg-blue-600 transition-all">
         صفحة العملاء
       </h1>
+      <div className="flex items-center justify-between mb-4">
+        <SearchInput handelSearch={handelSearch}/>
+      </div>
+      
       <div className="relative flex justify-end mb-4">
         <button
           onClick={openModal.bind(null, 'addClient')}
@@ -99,8 +109,8 @@ const Clients = () => {
                 يرجى الإنتظار
               </td>
             </tr>
-          ) : clientsData.length > 0 ? (
-            clientsData.map((client) => (
+          ) : resultData.length > 0 ? (
+            resultData.map((client) => (
               <tr key={client.id}>
                 <td className="border border-gray-300 px-4 py-2">
                   {client.fullName}

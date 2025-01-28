@@ -18,3 +18,4 @@ export const updateClient = async (data) => {
 export const deleteClient = async (id) => {
   await api.delete("/api/v1/Clients/", id);
 };
+                                            
