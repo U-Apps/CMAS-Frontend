@@ -1,32 +1,26 @@
-import { useState } from "react";
-import { useGetClients } from "../queries/clientQuery";
-import useStore from "../store";
-import FormClient from "../components/client/FormClient";
-import UpdateClient from "../components/client/UpdateClient";
+import { useGetClients } from '../queries/clientQuery';
+import useStore from '../store';
+import FormClient from '../components/client/FormClient';
+import UpdateClient from '../components/client/UpdateClient';
 import {
   addClientSchema,
   updateClientSchema,
   deleteClientSchema,
-} from "../validations/client.schema";
-import DeleteClient from "../components/client/DeleteClient";
+} from '../validations/client.schema';
+import DeleteClient from '../components/client/DeleteClient';
 
 const Clients = () => {
   const {
+    activeModal,
+    openModal,
+    closeModal,
     pageClient,
-    addClient,
-    updateClient,
-    openAddFormClient,
-    closeAddFormClient,
-    openUpdateFormClient,
-    closeUpdateFormClient,
-    deleteClient,
-    openDeleteFormClient,
-    closeDeleteFormClient,
     setPageClient,
+    setSelectedClient,
+    selectedClient,
   } = useStore();
 
   const { data, isLoading } = useGetClients(pageClient);
-  const [clients, setClients] = useState([]);
 
   const clientsData = data?.data?.items || [];
   const totalCount = data?.data?.totalCount || 0;
@@ -44,13 +38,13 @@ const Clients = () => {
   };
 
   const handelUpdate = (data) => {
-    setClients(data);
-    openUpdateFormClient();
+    setSelectedClient(data);
+    openModal('updateClient');
   };
 
   const handelDelete = (id) => {
-    setClients(id);
-    openDeleteFormClient(id);
+    setSelectedClient(id);
+    openModal('deleteClient');
   };
 
   return (
@@ -60,28 +54,28 @@ const Clients = () => {
       </h1>
       <div className="relative flex justify-end mb-4">
         <button
-          onClick={openAddFormClient}
+          onClick={openModal.bind(null, 'addClient')}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
         <FormClient
-          isOpen={addClient}
-          closeForm={closeAddFormClient}
+          isOpen={activeModal === 'addClient'}
+          closeForm={closeModal}
           schema={addClientSchema}
           title="إضافة عميل"
         />
         <UpdateClient
-          client={clients}
-          isOpen={updateClient}
-          closeForm={closeUpdateFormClient}
+          client={selectedClient}
+          isOpen={activeModal === 'updateClient'}
+          closeForm={closeModal}
           schema={updateClientSchema}
           title="تعديل عميل"
         />
         <DeleteClient
-          client={clients}
-          isOpen={deleteClient}
-          closeForm={closeDeleteFormClient}
+          client={selectedClient}
+          isOpen={activeModal === 'deleteClient'}
+          closeForm={closeModal}
           schema={deleteClientSchema}
           title="حذف عميل"
         />
@@ -151,8 +145,8 @@ const Clients = () => {
           disabled={pageClient === 1 || isLoading}
           className={`px-4 py-2 rounded ${
             pageClient === 1 || isLoading
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
         >
           السابق
@@ -162,8 +156,8 @@ const Clients = () => {
           disabled={pageClient * 10 >= totalCount || isLoading}
           className={`px-4 py-2 rounded ${
             pageClient * 10 >= totalCount || isLoading
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
+              ? 'bg-gray-300 cursor-not-allowed'
+              : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
         >
           التالي
