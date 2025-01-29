@@ -5,7 +5,6 @@ import UpdateClient from '../components/client/UpdateClient';
 import {
   addClientSchema,
   updateClientSchema,
-  deleteClientSchema,
 } from '../validations/client.schema';
 import DeleteClient from '../components/client/DeleteClient';
 import SearchInput from '../components/ui/SearchInput';
@@ -20,17 +19,20 @@ const Clients = () => {
     setPageClient,
     setSelectedClient,
     selectedClient,
+    clearSelectedClient,
   } = useStore();
 
-const [searchInput,setSearchInput]=useState('');
+  const [searchInput, setSearchInput] = useState('');
   const { data, isLoading } = useGetClients(pageClient);
-  
-const handelSearch=(search)=>{
-  setSearchInput(search);
-}
+
+  const handelSearch = (search) => {
+    setSearchInput(search);
+  };
   const clientsData = data?.data?.items || [];
   const totalCount = data?.data?.totalCount || 0;
-const resultData = clientsData.filter((client)=>client.fullName.toLowerCase().includes(searchInput.toLowerCase()));
+  const resultData = clientsData.filter((client) =>
+    client.fullName.toLowerCase().includes(searchInput.toLowerCase())
+  );
   const handleNextPage = () => {
     if (pageClient * 10 < totalCount) {
       setPageClient(pageClient + 1);
@@ -59,9 +61,9 @@ const resultData = clientsData.filter((client)=>client.fullName.toLowerCase().in
         صفحة العملاء
       </h1>
       <div className="flex items-center justify-between mb-4">
-        <SearchInput handelSearch={handelSearch}/>
+        <SearchInput handelSearch={handelSearch} />
       </div>
-      
+
       <div className="relative flex justify-end mb-4">
         <button
           onClick={openModal.bind(null, 'addClient')}
@@ -77,6 +79,7 @@ const resultData = clientsData.filter((client)=>client.fullName.toLowerCase().in
         />
         <UpdateClient
           client={selectedClient}
+          clear={clearSelectedClient}
           isOpen={activeModal === 'updateClient'}
           closeForm={closeModal}
           schema={updateClientSchema}
@@ -86,7 +89,6 @@ const resultData = clientsData.filter((client)=>client.fullName.toLowerCase().in
           client={selectedClient}
           isOpen={activeModal === 'deleteClient'}
           closeForm={closeModal}
-          schema={deleteClientSchema}
           title="حذف عميل"
         />
       </div>

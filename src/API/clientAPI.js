@@ -1,4 +1,4 @@
-import api from "../libs/apiCall";
+import api from '../libs/apiCall';
 
 export const getClients = async (pageNumber) => {
   const response = await api.get(
@@ -8,14 +8,13 @@ export const getClients = async (pageNumber) => {
 };
 
 export const registerClient = async (data) => {
-  await api.post("/api/v1/Clients", data);
+  await api.post('/api/v1/Clients', data);
 };
 
 export const updateClient = async (data) => {
-  await api.put("/api/v1/Clients", data);
+  await api.put('/api/v1/Clients', data);
 };
 
 export const deleteClient = async (id) => {
-  await api.delete("/api/v1/Clients/", id);
+  await api.delete(`/api/v1/Clients/${id}`);
 };
-                                            

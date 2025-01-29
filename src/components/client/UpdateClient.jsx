@@ -1,9 +1,9 @@
 /* eslint-disable react/prop-types */
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
-import FieldInput from "../FieldInput";
-import { useUpdateClient } from "../../queries/clientQuery";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
+import FieldInput from '../FieldInput';
+import { useUpdateClient } from '../../queries/clientQuery';
 
 const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
   const updateClientMutation = useUpdateClient();
@@ -87,8 +87,8 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                       disabled={updateClientMutation.isLoading}
                     >
                       {updateClientMutation.isLoading
-                        ? "جارٍ التحميل..."
-                        : "حفظ"}
+                        ? 'جارٍ التحميل...'
+                        : 'حفظ'}
                     </button>
                   </div>
                 </form>
