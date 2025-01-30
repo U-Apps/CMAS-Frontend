@@ -31,7 +31,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
     <>
       {isOpen && (
         <>
-          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-20"></div>
+          <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-xs z-20"></div>
 
           <div className="fixed inset-0 flex items-center justify-center z-30">
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">

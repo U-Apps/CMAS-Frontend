@@ -135,12 +135,12 @@ const ClientsTable = () => {
                     {client.email}
                   </td>
                   <td className="px-4 py-2 border text-center">
-                    <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 transition mx-1">
+                    <button className="bg-yellow-500 text-white px-4 py-2 rounded-sm hover:bg-yellow-600 transition mx-1">
                       تعديل
                     </button>
                     <button
                       onClick={() => handleDelete(client.id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition mx-1"
+                      className="bg-red-500 text-white px-4 py-2 rounded-sm hover:bg-red-600 transition mx-1"
                     >
                       حذف
                     </button>
@@ -217,7 +217,7 @@ export default ClientsTable;
 //                   <td className="px-4 py-2 border text-center">
 //                     <button
 //                       onClick={() => navigate(`/details/${client.id}`)}
-//                       className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
+//                       className="bg-blue-500 text-white px-4 py-2 rounded-sm hover:bg-blue-600 transition"
 //                     >
 //                       عرض التفاصيل
 //                     </button>

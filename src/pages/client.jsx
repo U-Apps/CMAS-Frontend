@@ -129,13 +129,13 @@ const Clients = () => {
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button
                     onClick={() => handelUpdate(client)}
-                    className="bg-yellow-500 text-white px-2 py-1 rounded mr-2 hover:bg-yellow-600 ml-2"
+                    className="bg-yellow-500 text-white px-2 py-1 rounded-sm mr-2 hover:bg-yellow-600 ml-2"
                   >
                     تعديل
                   </button>
                   <button
                     onClick={() => handelDelete(client.id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                    className="bg-red-500 text-white px-2 py-1 rounded-sm hover:bg-red-600"
                   >
                     حذف
                   </button>
