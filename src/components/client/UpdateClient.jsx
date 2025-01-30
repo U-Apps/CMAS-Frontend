@@ -84,9 +84,9 @@ const UpdateClient = ({ isOpen, closeForm, schema, title, client }) => {
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                      disabled={updateClientMutation.isLoading}
+                      disabled={updateClientMutation.isPending}
                     >
-                      {updateClientMutation.isLoading
+                      {updateClientMutation.isPending
                         ? 'جارٍ التحميل...'
                         : 'حفظ'}
                     </button>

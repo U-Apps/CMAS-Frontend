@@ -34,9 +34,9 @@ const DeleteClient = ({ isOpen, closeForm, title, client }) => {
                     type="button"
                     onClick={() => handleDeleteClient(client)}
                     className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                    disabled={deleteClientMutation.isLoading}
+                    disabled={deleteClientMutation.isPending}
                   >
-                    {deleteClientMutation.isLoading ? 'جارٍ التحميل...' : 'حذف'}
+                    {deleteClientMutation.isPending ? 'جار الحذف...' : 'حذف'}
                   </button>
                 </div>
               </div>

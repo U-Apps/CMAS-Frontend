@@ -4,7 +4,6 @@ const createClientSlice = (set) => ({
 
   setPageClient: (page) => set({ pageClient: page }),
   setSelectedClient: (client) => set({ selectedClient: client }),
-  clearSelectedClient: () => set({ selectedClient: null }),
 });
 
 export default createClientSlice;

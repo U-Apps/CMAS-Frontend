@@ -18,3 +18,8 @@ export const updateClient = async (data) => {
 export const deleteClient = async (id) => {
   await api.delete(`/api/v1/Clients/${id}`);
 };
+
+export const getClientById = async (id) => {
+  const response = await api.get(`/api/v1/Clients/${id}`);
+  return response.data;
+};
