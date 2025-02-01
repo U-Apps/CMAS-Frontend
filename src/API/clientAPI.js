@@ -1,4 +1,4 @@
-import api from '../libs/apiCall';
+import api from '../lib/apiCall';
 
 export const getClients = async (pageNumber) => {
   const response = await api.get(
