@@ -1,11 +1,11 @@
 /* eslint-disable react/prop-types */
-import { useDeleteClient } from "../../queries/clientQuery";
+import { useDeleteWorker } from "../../queries/workerQuery";
 
-const DeleteClient = ({ isOpen, closeForm, title, client }) => {
-  const deleteClientMutation = useDeleteClient();
+const DeleteWorker = ({ isOpen, closeForm, title, worker }) => {
+  const deleteWorkerMutation = useDeleteWorker();
 
-  const handleDeleteClient = (id) => {
-    deleteClientMutation.mutate(id);
+  const handleDeleteWorker = (id) => {
+    deleteWorkerMutation.mutate(id);
   };
   return (
     <>
@@ -26,17 +26,17 @@ const DeleteClient = ({ isOpen, closeForm, title, client }) => {
                     type="button"
                     onClick={closeForm}
                     className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition ml-2"
-                    hidden={deleteClientMutation.isPending}
+                    hidden={deleteWorkerMutation.isPending}
                   >
                     إلغاء
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleDeleteClient(client)}
-                    className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                    disabled={deleteClientMutation.isPending}
+                    onClick={() => handleDeleteWorker(worker)}
+                    className="bg-red-500 text-white px-6 py-2 rounded-md hover:bg-red-600 transition"
+                    disabled={deleteWorkerMutation.isPending}
                   >
-                    {deleteClientMutation.isPending ? "جار الحذف..." : "حذف"}
+                    {deleteWorkerMutation.isPending ? "جار الحذف..." : "حذف"}
                   </button>
                 </div>
               </div>
@@ -48,4 +48,4 @@ const DeleteClient = ({ isOpen, closeForm, title, client }) => {
   );
 };
 
-export default DeleteClient;
+export default DeleteWorker;

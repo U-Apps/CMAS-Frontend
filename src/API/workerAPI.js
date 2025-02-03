@@ -7,7 +7,7 @@ export const getWorkers = async (pageNumber) => {
   return response.data;
 };
 
-export const registerClient = async (data) => {
+export const registerWorker = async (data) => {
   await api.post("/api/v1/Workers", data);
 };
 
@@ -23,3 +23,10 @@ export const getWorkerById = async (id) => {
   const response = await api.get(`/api/v1/Workers/${id}`);
   return response.data;
 };
+
+// export const getWorkerByName = async (name) => await api.get(`/api/v1/Workers/${name}`);
+
+// export const getWorkersByAvailability = async (isAvailable) =>
+//   await api.get(`api/v1/Workers/IsAvailable?isAvailable=${isAvailable}`);
+
+// export const getWorkerDetails = async (id) => await api.get(`api/v1/Workers/details/${id}`);
