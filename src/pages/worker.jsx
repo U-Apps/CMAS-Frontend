@@ -22,8 +22,8 @@ const Workers = () => {
     clearSelectedWorker,
   } = useStore();
 
-  const [setSearchInput] = useState("");
-  const { searchInput, data, isLoading } = useGetWorkers(pageWorker);
+  const [searchInput, setSearchInput] = useState("");
+  const { data, isLoading } = useGetWorkers(pageWorker);
 
   const handelSearch = (search) => {
     setSearchInput(search);
@@ -119,7 +119,7 @@ const Workers = () => {
                   {Worker.specialty}
                 </td>
                 <td className="border border-gray-300 px-4 py-2">
-                  {Worker.isAvailable}
+                  {Worker.isAvailable ? "متاح" : "غير متاح"}
                 </td>
                 <td className="border border-gray-300 px-4 py-2 text-center">
                   <button

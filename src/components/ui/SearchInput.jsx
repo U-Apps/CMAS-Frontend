@@ -6,7 +6,7 @@ export default function SearchInput({ handelSearch }) {
   const inputRef = useRef(null);
 
   const handleIconClick = () => {
-    inputRef.current.focus(); // تركيز على حقل الإدخال عند النقر على الأيقونة
+    inputRef.current.focus();
   };
 
   const handleKeyPress = (e) => {
