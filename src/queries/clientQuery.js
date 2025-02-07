@@ -1,47 +1,48 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getClients,
-  registerClient,
+  createClient,
   updateClient,
   deleteClient,
-  getClientById,
 } from '../API/clientAPI';
 import { toast } from 'sonner';
 import useStore from '../store';
 
-export function useGetClients(pageNumber) {
+export function useGetClients(params) {
   return useQuery({
-    queryKey: ['clients', pageNumber],
-    queryFn: () => getClients(pageNumber),
+    queryKey: ['clients', params],
+    queryFn: () => getClients({ ...params, pageSize: 10 }),
     staleTime: 600000,
     cacheTime: 1800000,
+    keepPreviousData: true,
   });
 }
 
-export function useRegisterClient() {
-  const { closeAddFormClient, pageClient } = useStore();
+export function useCreateClient() {
+  const { closeModal, pageClient } = useStore();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data) => registerClient(data),
+    mutationFn: (data) => createClient(data),
 
     onSettled: async () => {
       await queryClient.invalidateQueries({
         queryKey: ['clients', pageClient],
       });
     },
-    onSuccess: () => {
-      toast.success('تمت الإضافة بنجاح');
-      closeAddFormClient();
+    onSuccess: (data) => {
+      toast.success(data?.message);
+      closeModal();
     },
-    onError: () => {
-      toast.error('حدث خطأ ما');
+
+    onError: (error) => {
+      toast.error(error?.response?.data?.message);
     },
   });
 }
 
 export function useUpdateClient() {
-  const { closeUpdateFormClient, pageClient } = useStore();
+  const { closeModal, pageClient } = useStore();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -52,19 +53,20 @@ export function useUpdateClient() {
         queryKey: ['clients', pageClient],
       });
     },
-    onSuccess: () => {
-      toast.success('تمت التعديل بنجاح');
-      closeUpdateFormClient();
+    onSuccess: (data) => {
+      toast.success(data?.message);
+      closeModal();
     },
-    onError: () => {
-      toast.error('حدث خطأ ما');
+    onError: (error) => {
+      toast.error(error?.response?.data?.message);
     },
   });
 }
 
 export function useDeleteClient() {
-  const { closeDeleteFormClient, pageClient } = useStore();
+  const { closeModal, pageClient } = useStore();
   const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: (id) => deleteClient(id),
     onSettled: async () => {
@@ -72,21 +74,12 @@ export function useDeleteClient() {
         queryKey: ['clients', pageClient],
       });
     },
-    onSuccess: () => {
-      toast.success('تمت عملية الحذف بنجاح');
-      closeDeleteFormClient();
+    onSuccess: (data) => {
+      toast.success(data?.message);
+      closeModal();
     },
-    onError: () => {
-      toast.error('حدف خطأ اثناء الحذف');
+    onError: (error) => {
+      toast.error(error?.response?.data?.message);
     },
-  });
-}
-
-export function useGetClientById(id) {
-  return useQuery({
-    queryKey: ['client', id],
-    queryFn: () => getClientById(id),
-    staleTime: 600000,
-    cacheTime: 1800000,
   });
 }

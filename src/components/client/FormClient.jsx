@@ -1,12 +1,12 @@
 /* eslint-disable react/prop-types */
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import FieldInput from "../FieldInput";
-import FieldRadio from "../FieldRadio";
-import { useRegisterClient } from "../../queries/clientQuery";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import FieldInput from '../FieldInput';
+import FieldRadio from '../FieldRadio';
+import { useCreateClient } from '../../queries/clientQuery';
 
 const FormClient = ({ isOpen, closeForm, schema, title }) => {
-  const createClientMutation = useRegisterClient();
+  const createClientMutation = useCreateClient();
 
   const {
     register,
@@ -20,7 +20,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
   const handelAddClient = (data) => {
     const mappedData = {
       ...data,
-      clientType: data.clientType === "فرد" ? 1 : 2,
+      clientType: data.clientType === 'فرد' ? 1 : 2,
     };
 
     createClientMutation.mutate(mappedData);
@@ -69,7 +69,7 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
                   <FieldRadio
                     name="clientType"
                     label="نوع العميل"
-                    options={["فرد", "شركة"]}
+                    options={['فرد', 'شركة']}
                     register={register}
                     errors={errors}
                     value="فرد"
@@ -103,53 +103,3 @@ const FormClient = ({ isOpen, closeForm, schema, title }) => {
 };
 
 export default FormClient;
-
-// {
-//   import { ClientSchema } from './validations/client';
-//   import useStore from './store';
-//   import FormClient from './components/client/FormClient';
-//   import UpdateClient from './components/client/UpdateClient';
-//   export default function App() {
-//     const {
-//       addClient,
-//       updateClient,
-//       openAddFormClient,
-//       closeAddFormClient,
-//       openUpdateFormClient,
-//       closeUpdateFormClient,
-//     } = useStore();
-//     return (
-//       <>
-//         <div className="relative">
-//           <button
-//             onClick={openAddFormClient}
-//             className="bg-blue-500 text-white p-2 rounded-md"
-//           >
-//             إضافة بيانات
-//           </button>
-
-//           <button
-//             onClick={openUpdateFormClient}
-//             className="bg-blue-500 text-white p-2 rounded-md"
-//           >
-//             تعديل بيانات
-//           </button>
-
-//           <FormClient
-//             isOpen={addClient}
-//             closeForm={closeAddFormClient}
-//             schema={ClientSchema}
-//             title="إضافة عميل"
-//           />
-//           <UpdateClient
-//             isOpen={updateClient}
-//             closeForm={closeUpdateFormClient}
-//             schema={ClientSchema}
-//             title="تعديل عميل"
-//           />
-//         </div>
-//       </>
-//     );
-//   }
-
-// }

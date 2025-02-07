@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { useGetClients } from '../queries/clientQuery';
 import useStore from '../store';
 import FormClient from '../components/client/FormClient';
@@ -7,8 +8,6 @@ import {
   updateClientSchema,
 } from '../validations/client.schema';
 import DeleteClient from '../components/client/DeleteClient';
-import SearchInput from '../components/ui/SearchInput';
-import { useState } from 'react';
 
 const Clients = () => {
   const {
@@ -22,17 +21,28 @@ const Clients = () => {
     clearSelectedClient,
   } = useStore();
 
-  const [searchInput, setSearchInput] = useState('');
-  const { data, isLoading } = useGetClients(pageClient);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [clientType, setClientType] = useState(null);
+  const inputRef = useRef(null);
 
-  const handelSearch = (search) => {
-    setSearchInput(search);
-  };
-  const clientsData = data?.data?.items || [];
-  const totalCount = data?.data?.totalCount || 0;
-  const resultData = clientsData.filter((client) =>
-    client.fullName.toLowerCase().includes(searchInput.toLowerCase())
-  );
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchTerm);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
+
+  const { data: clients, isLoading } = useGetClients({
+    pageNumber: pageClient,
+    searchTerm: debouncedSearch,
+    clientType: clientType === null ? undefined : clientType,
+  });
+
+  const clientsData = clients?.data?.items || [];
+  const totalCount = clients?.data?.totalCount;
+
   const handleNextPage = () => {
     if (pageClient * 10 < totalCount) {
       setPageClient(pageClient + 1);
@@ -45,8 +55,28 @@ const Clients = () => {
     }
   };
 
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value.trim());
+  };
+
+  const handleClearSearch = () => {
+    setSearchTerm('');
+    setDebouncedSearch('');
+    setClientType(null);
+    if (inputRef.current) {
+      inputRef.current.value = '';
+    }
+  };
+
+  const handleClientTypeChange = (event) => {
+    const selectedType = event.target.value
+      ? parseInt(event.target.value)
+      : null;
+    setClientType(selectedType);
+  };
   const handelUpdate = (data) => {
     setSelectedClient(data);
+    console.log(data);
     openModal('updateClient');
   };
 
@@ -60,8 +90,31 @@ const Clients = () => {
       <h1 className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-xl font-bold mb-4 hover:bg-blue-600 transition-all">
         صفحة العملاء
       </h1>
-      <div className="flex items-center justify-between mb-4">
-        <SearchInput handelSearch={handelSearch} />
+
+      <div className="mb-4 flex gap-2">
+        <input
+          type="text"
+          ref={inputRef}
+          onChange={handleSearchChange}
+          placeholder="ابحث عن اسم عميل..."
+          className="border p-2 rounded-lg w-64"
+        />
+        <button
+          onClick={handleClearSearch}
+          className="bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+          إلغاء
+        </button>
+
+        <select
+          value={clientType || ''}
+          onChange={handleClientTypeChange}
+          className="border p-2 rounded-lg"
+        >
+          <option value=""> الكل</option>
+          <option value="1">فرد</option>
+          <option value="2">شركة</option>
+        </select>
       </div>
 
       <div className="relative flex justify-end mb-4">
@@ -92,12 +145,13 @@ const Clients = () => {
           title="حذف عميل"
         />
       </div>
+
       <table className="table-auto border-collapse w-full border border-gray-300 shadow-md">
         <thead>
           <tr className="bg-gray-100">
             <th className="border border-gray-300 px-4 py-2">الاسم الكامل</th>
             <th className="border border-gray-300 px-4 py-2">
-              لبريد الإلكتروني
+              البريد الإلكتروني
             </th>
             <th className="border border-gray-300 px-4 py-2">رقم الهاتف</th>
             <th className="border border-gray-300 px-4 py-2">نوع العميل</th>
@@ -108,11 +162,11 @@ const Clients = () => {
           {isLoading ? (
             <tr>
               <td colSpan="5" className="text-center py-4">
-                يرجى الإنتظار
+                يرجى الإنتظار...
               </td>
             </tr>
-          ) : resultData.length > 0 ? (
-            resultData.map((client) => (
+          ) : clientsData.length > 0 ? (
+            clientsData.map((client) => (
               <tr key={client.id}>
                 <td className="border border-gray-300 px-4 py-2">
                   {client.fullName}
@@ -151,6 +205,7 @@ const Clients = () => {
           )}
         </tbody>
       </table>
+
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePreviousPage}
