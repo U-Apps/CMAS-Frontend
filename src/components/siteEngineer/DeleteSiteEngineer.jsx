@@ -34,7 +34,7 @@ const DeleteSiteEngineer = ({ isOpen, closeForm, title, siteEngineer }) => {
                     className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
                     disabled={deletesiteEngineerMutation.isPending}
                   >
-                    {deleteClientMutation.isPending ? 'جار الحذف...' : 'حذف'}
+                    {deletesiteEngineerMutation.isPending ? 'جار الحذف...' : 'حذف'}
                   </button>
                 </div>
               </div>

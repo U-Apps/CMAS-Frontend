@@ -3,12 +3,10 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FieldInput from '../FieldInput';
 import { useCreateClient } from '../../queries/clientQuery';
-import { useEffect } from 'react';
-import { useUpdateSiteEngineer } from '@/queries/SiteEngineerQueries';
+import { useCreateSiteEngineer } from '@/queries/SiteEngineerQueries';
 
-const FormSiteEngineer = ({ isOpen, closeForm, schema, title ,siteEngineer }) => {
-  const createClientMutation = useCreateClient();
-const updateSiteEngineer=useUpdateSiteEngineer();
+const FormSiteEngineer = ({ isOpen, closeForm, schema, title }) => {
+  const createSiteEngineertMutation = useCreateSiteEngineer();
   const {
     register,
     handleSubmit,
@@ -17,34 +15,12 @@ const updateSiteEngineer=useUpdateSiteEngineer();
   } = useForm({
     resolver: zodResolver(schema),
   });
-// const  SiteenginnerTrim=siteEngineer.split(' ').trim();
-// useEffect(()=>{
-//  if(siteEngineer){
-//    reset({
-//      id: siteEngineer.id,
-//     //  firstName:SiteenginnerTrim[0],
-//     //  secondName:SiteenginnerTrim[1],
-//     //  thirdName:SiteenginnerTrim[2],
-//     //  latedName:SiteenginnerTrim[3],
-//      email: siteEngineer.email,
-//      phoneNumber: siteEngineer.phoneNumber,
-//      address:siteEngineer.address,
-//      city:siteEngineer.city,
-//    })
-//  }
-// },[siteEngineer,reset])
 
+  const handelAddSiteEngineer = (data) => {
 
-  const handelAddClient = (data) => {
-
-    if(siteEngineer){
-     updateSiteEngineer.mutate(data);
-    }
-    // const mappedData = {
-    //   ...data,
-    // };
-    createClientMutation.mutate(mappedData);
+    createSiteEngineertMutation.mutate(data);
     reset();
+    console.log(data);
   };
 
   return (
@@ -57,11 +33,11 @@ const updateSiteEngineer=useUpdateSiteEngineer();
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
               <div className="bg-white p-4 rounded-t-lg">
                 <h2 className="text-xl font-bold text-center bg-blue-500 text-white px-4 py-2 rounded-lg mb-0 hover:bg-blue-600 transition-all">
-                  {siteEngineer? title:'update SiteEngineer' }
+                      {title}
                 </h2>
               </div>
               <div className="p-6 bg-white rounded-b-lg">
-                <form onSubmit={handleSubmit(handelAddClient)}>
+                <form onSubmit={handleSubmit(handelAddSiteEngineer)}>
 
                      <div className='flex justify-between gap-4'>
                      <FieldInput
@@ -111,7 +87,18 @@ const updateSiteEngineer=useUpdateSiteEngineer();
                     placeholder="73XXXXXXX"
                   />
                    
-                  <FieldInput
+                   <FieldInput
+                    id="nationalNumber"
+                    label="الرقم الوطني  "
+                    type="text"
+                    register={register}
+                    errors={errors}
+                    placeholder="ادخل الرقم الوطني"
+                  />
+                 
+                   </div>
+
+                   <FieldInput
                     id="email"
                     label="الايميل "
                     type="tel"
@@ -119,9 +106,8 @@ const updateSiteEngineer=useUpdateSiteEngineer();
                     errors={errors}
                     placeholder="example@gmail.com"
                   />
-                   </div>
 
-                  <div className='flex justify-between gap-4'>
+                   <div className='flex justify-between gap-4'>
                   <FieldInput
                     id="address"
                     label="العنوان "
@@ -130,31 +116,31 @@ const updateSiteEngineer=useUpdateSiteEngineer();
                     errors={errors}
                     placeholder="العنوان"
                   />
-                    <FieldInput
-                    id="city"
-                    label="الدوله "
-                    type="text"
+                  
+                  <FieldInput
+                    id="hireDate"
+                    label="تاريخ التقديم "
+                    type="date"
                     register={register}
                     errors={errors}
-                    placeholder="الدوله"
+                    placeholder="تاريخ التقديم"
                   />
-            
                   </div>
                   <div className="flex justify-end space-x-4">
                     <button
                       type="button"
                       onClick={closeForm}
                       className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition ml-2"
-                      hidden={createClientMutation.isPending}
+                      hidden={createSiteEngineertMutation.isPending}
                     >
                       إلغاء
                     </button>
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                      disabled={createClientMutation.isPending}
+                      disabled={createSiteEngineertMutation.isPending}
                     >
-                      {siteEngineer? 'تعديل':'حفظ'}
+                      حفظ
                     </button>
                   </div>
                 </form>

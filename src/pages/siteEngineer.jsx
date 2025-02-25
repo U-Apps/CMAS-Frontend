@@ -1,12 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
 import useStore from '../store';
-import FormClient from '../components/client/FormClient';
-import UpdateClient from '../components/client/UpdateClient';
-import {
-  addClientSchema,
-  updateClientSchema,
-} from '../validations/client.schema';
-import DeleteClient from '../components/client/DeleteClient';
 import { useGetSiteEngineer } from '@/queries/SiteEngineerQueries';
 import DeleteSiteEngineer from '@/components/siteEngineer/DeleteSiteEngineer';
 import FormSiteEngineer from '@/components/siteEngineer/FormSiteEngineer';
@@ -72,12 +65,12 @@ const SiteEngineer = () => {
   const handelUpdate = (data) => {
     setSelectedClient(data);
     console.log(data);
-    openModal('updateClient');
+    openModal('UpdateSiteEngineer');
   };
 
   const handelDelete = (id) => {
     setSelectedClient(id);
-    openModal('deleteClient');
+    openModal('DeleteSiteEngineer');
   };
 
   return (
@@ -125,7 +118,7 @@ const SiteEngineer = () => {
           title="تعديل عميل"
         />
         <DeleteSiteEngineer
-          client={selectedClient}
+          siteEngineer={selectedClient}
           isOpen={activeModal === 'DeleteSiteEngineer'}
           closeForm={closeModal}
           title="حذف عميل"

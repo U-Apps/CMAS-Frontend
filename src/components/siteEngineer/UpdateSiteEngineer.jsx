@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useUpdateSiteEngineer } from '@/queries/SiteEngineerQueries';
 
 const UpdateSiteEngineer = ({ isOpen, closeForm, schema, title ,siteEngineer }) => {
-//   const createClientMutation = useCreateClient();
+
 const updateSiteEngineer=useUpdateSiteEngineer();
   const {
     register,
@@ -17,31 +17,29 @@ const updateSiteEngineer=useUpdateSiteEngineer();
   } = useForm({
     resolver: zodResolver(schema),
   });
-const  SiteenginnerTrim=siteEngineer.fullName.trim().split(' ');
+const  SiteenginnerTrim=siteEngineer.fullName?.split(' ')||[];
+
 useEffect(()=>{
  if(siteEngineer){
    reset({
      id: siteEngineer.id,
-     firstName:SiteenginnerTrim[0],
-     secondName:SiteenginnerTrim[1],
-     thirdName:SiteenginnerTrim[2],
-     latedName:SiteenginnerTrim[3],
+     firstName:SiteenginnerTrim[0]||'',
+     secondName:SiteenginnerTrim[1] ||'',
+     thirdName:SiteenginnerTrim[2] ||'',
+     LastName:SiteenginnerTrim[3] ||'',
      email: siteEngineer.email,
      phoneNumber: siteEngineer.phoneNumber,
      address:siteEngineer.address,
-     city:siteEngineer.city,
+     nationalNumber: siteEngineer.nationalNumber,
+   hireDate: siteEngineer.hireDate?.toISOString().split('T')[0] || '',
    })
  }
 },[siteEngineer,reset])
 
 
-  const handelAddClient = (data) => {
+  const handelUpdateSiteEngineer = (data) => {
      updateSiteEngineer.mutate(data);
-    // const mappedData = {
-    //   ...data,
-    // };
-    // createClientMutation.mutate(mappedData);
-    // reset();
+    reset();
   };
 
   return (
@@ -58,8 +56,7 @@ useEffect(()=>{
                 </h2>
               </div>
               <div className="p-6 bg-white rounded-b-lg">
-                <form onSubmit={handleSubmit(handelAddClient)}>
-
+                <form onSubmit={handleSubmit(handelUpdateSiteEngineer)}>
                      <div className='flex justify-between gap-4'>
                      <FieldInput
                     id="firstName"
@@ -107,8 +104,16 @@ useEffect(()=>{
                     errors={errors}
                     placeholder="73XXXXXXX"
                   />
-                   
-                  <FieldInput
+                   <FieldInput
+                    id="nationalNumber"
+                    label="الرقم الوطني  "
+                    type="text"
+                    register={register}
+                    errors={errors}
+                    placeholder="ادخل الرقم الوطني"
+                  />
+                   </div>
+                   <FieldInput
                     id="email"
                     label="الايميل "
                     type="tel"
@@ -116,8 +121,6 @@ useEffect(()=>{
                     errors={errors}
                     placeholder="example@gmail.com"
                   />
-                   </div>
-
                   <div className='flex justify-between gap-4'>
                   <FieldInput
                     id="address"
@@ -127,29 +130,31 @@ useEffect(()=>{
                     errors={errors}
                     placeholder="العنوان"
                   />
-                    <FieldInput
-                    id="city"
-                    label="الدوله "
-                    type="text"
+                  
+                  <FieldInput
+                    id="hireDate"
+                    label="تاريخ التقديم "
+                    type="date"
                     register={register}
                     errors={errors}
-                    placeholder="الدوله"
+                    placeholder="تاريخ التقديم "
                   />
-            
                   </div>
+
+
                   <div className="flex justify-end space-x-4">
                     <button
                       type="button"
                       onClick={closeForm}
                       className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition ml-2"
-                      hidden={createClientMutation.isPending}
+                      hidden={updateSiteEngineer.isPending}
                     >
                       إلغاء
                     </button>
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                      disabled={createClientMutation.isPending}
+                      disabled={updateSiteEngineer.isPending}
                     >
                       تعديل 
                     </button>
