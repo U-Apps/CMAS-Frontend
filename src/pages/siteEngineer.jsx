@@ -8,7 +8,10 @@ import {
 } from '../validations/client.schema';
 import DeleteClient from '../components/client/DeleteClient';
 import { useGetSiteEngineer } from '@/queries/SiteEngineerQueries';
-
+import DeleteSiteEngineer from '@/components/siteEngineer/DeleteSiteEngineer';
+import FormSiteEngineer from '@/components/siteEngineer/FormSiteEngineer';
+import { SiteEngineerAddingFormSchema } from '@/validations/siteEngineer.schema';
+import UpdateSiteEngineer from '../components/siteEngineer/UpdateSiteEngineer';
 const SiteEngineer = () => {
   const {
     activeModal,
@@ -23,7 +26,6 @@ const SiteEngineer = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [clientType, setClientType] = useState(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -103,28 +105,28 @@ const SiteEngineer = () => {
 
       <div className="relative flex justify-end mb-4">
         <button
-          onClick={openModal.bind(null, 'addClient')}
+          onClick={openModal.bind(null, 'FormSiteEngineer')}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
-        <FormClient
-          isOpen={activeModal === 'addClient'}
+        <FormSiteEngineer
+          isOpen={activeModal === 'FormSiteEngineer'}
           closeForm={closeModal}
-          schema={addClientSchema}
+          schema={SiteEngineerAddingFormSchema}
           title="إضافة عميل"
         />
-        <UpdateClient
-          client={selectedClient}
+        <UpdateSiteEngineer
+          siteEngineer={selectedClient}
           clear={clearSelectedClient}
-          isOpen={activeModal === 'updateClient'}
+          isOpen={activeModal === 'UpdateSiteEngineer'}
           closeForm={closeModal}
-          schema={updateClientSchema}
+          schema={SiteEngineerAddingFormSchema}
           title="تعديل عميل"
         />
-        <DeleteClient
+        <DeleteSiteEngineer
           client={selectedClient}
-          isOpen={activeModal === 'deleteClient'}
+          isOpen={activeModal === 'DeleteSiteEngineer'}
           closeForm={closeModal}
           title="حذف عميل"
         />
@@ -134,13 +136,11 @@ const SiteEngineer = () => {
         <thead>
           <tr className="bg-gray-100">
             <th className="border border-gray-300 px-4 py-2">الاسم الكامل</th>
-            <th className="border border-gray-300 px-4 py-2">
-              البريد الإلكتروني
-            </th>
+            <th className="border border-gray-300 px-4 py-2">لبريد الإلكتروني </th>
             <th className="border border-gray-300 px-4 py-2">رقم الهاتف</th>
             <th className="border border-gray-300 px-4 py-2">العنوان </th>
             <th className="border border-gray-300 px-4 py-2">الحاله</th>
-            <th className="border border-gray-300 px-4 py-2">الحاله</th> 
+            <th className="border border-gray-300 px-4 py-2">الاجراءات</th> 
           </tr>
         </thead>
         <tbody>

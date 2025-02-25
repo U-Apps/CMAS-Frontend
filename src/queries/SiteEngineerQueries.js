@@ -1,21 +1,18 @@
-import { Mutation, useMutation, useQuery } from "@tanstack/react-query";
-import { QueryClient, useQueryClient } from "react-query";
-import { GetEngineer,CreateEngineer,UpdateEngineer } from "@/API/SiteEngineerApi";
+import { Mutation, useMutation, useQuery,useQueryClient } from "@tanstack/react-query";
+import useStore from '../store';
+import { GetEngineer,CreateEngineer,UpdateEngineer,DeleteEngineer } from "@/API/SiteEngineerApi";
 import { toast } from 'sonner';
 export  function useGetSiteEngineer(params){
   return useQuery({
     queryKey:['site-engineer',params],
     queryFn:()=>GetEngineer({...params,
-        pageSize:10
-    
+        pageSize:10 
     }),
     staleTime:60000,
     cacheTime:1800000,
     keepPreviousData:true,
   })
 }
-
-
 export function useCreateSiteEngineer(){
     const queryClient=useQueryClient();
     const {pageClient } = useStore();
@@ -30,7 +27,6 @@ export function useCreateSiteEngineer(){
 }
 
 export function useUpdateSiteEngineer(){
-
     const queryClient=useQueryClient();
     const {pageClient } = useStore();
     return useMutation({
@@ -41,4 +37,17 @@ export function useUpdateSiteEngineer(){
         onSuccess:()=>toast.success('Engineer was updated successfully'),
         onError:()=>toast.error('Engineer was not updated successfully')
     });
+}
+
+export function UseDeleteSiteEngine(){
+    const queryClient=useQueryClient();
+    const {pageClient } = useStore();  
+    return useMutation({
+        mutationFn:(id)=>DeleteEngineer(id),
+        onSettled:()=>{
+            queryClient.invalidateQueries(['site-engineer',pageClient])
+        },
+        onSuccess:()=>toast.success('Engineer was deleted successfully'),
+        onError:()=>toast.error('Engineer was not deleted successfully')
+    })
 }
