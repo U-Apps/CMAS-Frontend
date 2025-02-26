@@ -17,7 +17,7 @@ const updateSiteEngineer=useUpdateSiteEngineer();
   } = useForm({
     resolver: zodResolver(schema),
   });
-const  SiteenginnerTrim=siteEngineer.fullName?.split(' ')||[];
+const  SiteenginnerTrim=siteEngineer?.fullName?.split(' ')||[];
 
 useEffect(()=>{
  if(siteEngineer){

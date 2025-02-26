@@ -5,18 +5,20 @@ import DeleteSiteEngineer from '@/components/siteEngineer/DeleteSiteEngineer';
 import FormSiteEngineer from '@/components/siteEngineer/FormSiteEngineer';
 import { SiteEngineerAddingFormSchema } from '@/validations/siteEngineer.schema';
 import UpdateSiteEngineer from '../components/siteEngineer/UpdateSiteEngineer';
+import useSiteEngineerStore from '@/store/siteEngineer';
 const SiteEngineer = () => {
-  const {
-    activeModal,
-    openModal,
-    closeModal,
-    pageClient,
-    setPageClient,
-    setSelectedClient,
-    selectedClient,
-    clearSelectedClient,
-  } = useStore();
+  // const {
+  //   activeModal,
+  //   openModal,
+  //   closeModal,
+  //   pageClient,
+  //   setPageClient,
+  //   setSelectedClient,
+  //   selectedClient,
+  //   clearSelectedClient,
+  // } = useStore();
 
+const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, selectedSiteEngineer,setSelectedSiteEngineer}=useSiteEngineerStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const inputRef = useRef(null);
@@ -30,27 +32,29 @@ const SiteEngineer = () => {
   }, [searchTerm]);
 
   const { data: siteEngineer, isLoading } = useGetSiteEngineer({
-    pageNumber: pageClient,
+    pageNumber: pageSiteEngineer,
     searchTerm: debouncedSearch,
   });
 
   const siteEngineerData = siteEngineer?.data?.items || [];
-  const totalCount = siteEngineer?.data?.totalCount;
-
+  const totalCount = siteEngineer?.data?.totalPages;
   const handleNextPage = () => {
-    if (pageClient * 10 < totalCount) {
-      setPageClient(pageClient + 1);
+    if (pageSiteEngineer  < totalCount) {
+      setPageSiteEngineer(pageSiteEngineer + 1);
+      console.log(pageSiteEngineer);
     }
+   
   };
 
   const handlePreviousPage = () => {
-    if (pageClient > 1) {
-      setPageClient(pageClient - 1);
+    if (pageSiteEngineer > 1) {
+      setPageSiteEngineer(pageSiteEngineer - 1);
     }
   };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value.trim());
+
   };
 
   const handleClearSearch = () => {
@@ -63,13 +67,12 @@ const SiteEngineer = () => {
   };
 
   const handelUpdate = (data) => {
-    setSelectedClient(data);
-    console.log(data);
+    setSelectedSiteEngineer(data)
     openModal('UpdateSiteEngineer');
   };
 
   const handelDelete = (id) => {
-    setSelectedClient(id);
+    setSelectedSiteEngineer(id);
     openModal('DeleteSiteEngineer');
   };
 
@@ -110,15 +113,14 @@ const SiteEngineer = () => {
           title="إضافة عميل"
         />
         <UpdateSiteEngineer
-          siteEngineer={selectedClient}
-          clear={clearSelectedClient}
+          siteEngineer={selectedSiteEngineer }
           isOpen={activeModal === 'UpdateSiteEngineer'}
           closeForm={closeModal}
           schema={SiteEngineerAddingFormSchema}
           title="تعديل عميل"
         />
         <DeleteSiteEngineer
-          siteEngineer={selectedClient}
+          siteEngineer={selectedSiteEngineer}
           isOpen={activeModal === 'DeleteSiteEngineer'}
           closeForm={closeModal}
           title="حذف عميل"
@@ -190,9 +192,9 @@ const SiteEngineer = () => {
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePreviousPage}
-          disabled={pageClient === 1 || isLoading}
+          disabled={pageSiteEngineer === 1 || isLoading}
           className={`px-4 py-2 rounded ${
-            pageClient === 1 || isLoading
+            pageSiteEngineer === 1 || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
@@ -201,9 +203,9 @@ const SiteEngineer = () => {
         </button>
         <button
           onClick={handleNextPage}
-          disabled={pageClient * 10 >= totalCount || isLoading}
+          disabled={pageSiteEngineer  >= totalCount || isLoading}
           className={`px-4 py-2 rounded ${
-            pageClient * 10 >= totalCount || isLoading
+            pageSiteEngineer  >= totalCount || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
