@@ -1,11 +1,11 @@
 import { useGetWorkers } from "../queries/workerQuery";
 import useStore from "../store/worker-index";
-// import FormWorker from "../components/Worker/FormWorker";
+import FormWorker from "../components/Worker/FormWorker";
 import UpdateWorker from "../components/worker/UpdateWorker";
 import {
   addWorkerSchema,
   updateWorkerSchema,
-} from "../validations/Worker.schema";
+} from "../validations/worker.schema";
 import DeleteWorker from "../components/worker/DeleteWorker";
 import SearchInput from "../components/ui/SearchInput";
 import { useState } from "react";
@@ -69,12 +69,12 @@ const Workers = () => {
           إضافة عميل
         </button>
 
-        {/* <FormWorker
+        <FormWorker
           isOpen={activeModal === "addWorker"}
           closeForm={closeModal}
           schema={addWorkerSchema}
           title="إضافة عامل"
-        /> */}
+        />
         <UpdateWorker
           Worker={selectedWorker}
           clear={clearSelectedWorker}

@@ -1,5 +1,4 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-
 import { Toaster } from "sonner";
 import Workers from "./pages/worker";
 

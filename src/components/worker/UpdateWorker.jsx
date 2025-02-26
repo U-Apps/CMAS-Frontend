@@ -4,9 +4,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import FieldInput from "../FieldInput";
 import { useUpdateWorker } from "../../queries/workerQuery";
-import FieldSelect from "../FieldSelect";
+// import FieldSelect from "../FieldSelect";
 import FieldRadio from "../FieldRadio";
-import { useGetWorkerSpecialties } from "../../queries/workerSpecialtiesQuery";
+// import { useGetWorkerSpecialties } from "../../queries/workerSpecialtiesQuery";
+import WorkerSpecialties from "../../WorkerSpecialties";
 const UpdateWorker = ({ isOpen, closeForm, schema, title, worker }) => {
   const updateWorkerMutation = useUpdateWorker();
   const {
@@ -126,17 +127,10 @@ const UpdateWorker = ({ isOpen, closeForm, schema, title, worker }) => {
                         errors={errors}
                         placeholder="الرقم الوطني"
                       />
-                      <FieldSelect
-                        id="specialty"
-                        label="التخصص"
-                        register={register}
-                        errors={errors}
-                        options={[
-                          { value: 1, label: "هندسة مدنية" },
-                          { value: 2, label: "هندسة كهربائية" },
-                          { value: 3, label: "هندسة ميكانيكية" },
-                        ]}
-                      />
+                      <>
+                        <WorkerSpecialties />
+                      </>
+
                       <FieldRadio
                         name="isAvailable"
                         label="حالة التوفر"

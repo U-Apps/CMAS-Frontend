@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FieldInput from "../FieldInput";
 import { useRegisterWorker } from "../../queries/workerQuery";
-import FieldSelect from "../FieldSelect";
+// import FieldSelect from "../FieldSelect";
 import FieldRadio from "../FieldRadio";
+import WorkerSpecialties from "../../WorkerSpecialties";
 
 const FormWorker = ({ isOpen, closeForm, schema, title, specialties }) => {
   const createWorkerMutation = useRegisterWorker();
@@ -111,16 +112,9 @@ const FormWorker = ({ isOpen, closeForm, schema, title, specialties }) => {
                         errors={errors}
                         placeholder="الرقم الوطني"
                       />
-                      <FieldSelect
-                        id="specialty"
-                        label="التخصص"
-                        register={register}
-                        errors={errors}
-                        options={specialties.map((specialty) => ({
-                          value: specialty.id,
-                          label: specialty.name,
-                        }))}
-                      />
+
+                      <WorkerSpecialties />
+
                       <FieldRadio
                         name="isAvailable"
                         label="حالة التوفر"
