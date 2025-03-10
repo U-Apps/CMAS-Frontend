@@ -1,14 +1,14 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import FilterType from "./ui/FilterType";
-import SearchInput from "./ui/SearchInput";
-import useStore from "../store";
-import FormClient from "./client/FormClient";
-import UpdateClient from "./client/UpdateClient";
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import FilterType from './ui/FilterType';
+import SearchInput from './ui/SearchInput';
+import useStore from '../store';
+import FormClient from './client/ClientForm';
+import UpdateClient from './client/UpdateClient';
 import {
   addClientSchema,
   updateClientSchema,
-} from "../validations/client.schema";
+} from '../validations/client.schema';
 
 const ClientsTable = () => {
   const [clients, setClients] = useState([]);
@@ -31,7 +31,7 @@ const ClientsTable = () => {
   useEffect(() => {
     axios
       .get(
-        "http://constructionmanagementassistant.runasp.net/api/v1/Clients?pageNumber=1&pageSize=10"
+        'http://constructionmanagementassistant.runasp.net/api/v1/Clients?pageNumber=1&pageSize=10'
       )
 
       .then((response) => {
@@ -45,10 +45,10 @@ const ClientsTable = () => {
   }, []);
 
   //Yamani code for filter
-  const [filterSelected, setFilterSelected] = useState("all");
+  const [filterSelected, setFilterSelected] = useState('all');
   const FilterResult = clients.filter((client) => {
-    if (filterSelected == "person") return client.type === "person";
-    else if (filterSelected == "company") return client.type === "company";
+    if (filterSelected == 'person') return client.type === 'person';
+    else if (filterSelected == 'company') return client.type === 'company';
     else {
       return true; // return all clients if no filter selected
     }
@@ -59,7 +59,7 @@ const ClientsTable = () => {
   };
 
   // for search
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   FilterResult.filter((client) => {
     return client.name.toLowerCase().includes(searchValue.toLowerCase());
   });

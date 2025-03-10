@@ -1,14 +1,19 @@
 /* eslint-disable react/prop-types */
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import FieldInput from '../FieldInput';
+import FieldInput from '../ui/FieldInput';
 import { useCreateClient } from '../../queries/clientQuery';
 import { useEffect } from 'react';
 import { useUpdateSiteEngineer } from '@/queries/SiteEngineerQueries';
 
-const UpdateSiteEngineer = ({ isOpen, closeForm, schema, title ,siteEngineer }) => {
-
-const updateSiteEngineer=useUpdateSiteEngineer();
+const UpdateSiteEngineer = ({
+  isOpen,
+  closeForm,
+  schema,
+  title,
+  siteEngineer,
+}) => {
+  const updateSiteEngineer = useUpdateSiteEngineer();
   const {
     register,
     handleSubmit,
@@ -17,28 +22,27 @@ const updateSiteEngineer=useUpdateSiteEngineer();
   } = useForm({
     resolver: zodResolver(schema),
   });
-const  SiteenginnerTrim=siteEngineer?.fullName?.split(' ')||[];
+  const SiteenginnerTrim = siteEngineer?.fullName?.split(' ') || [];
 
-useEffect(()=>{
- if(siteEngineer){
-   reset({
-     id: siteEngineer.id,
-     firstName:SiteenginnerTrim[0]||'',
-     secondName:SiteenginnerTrim[1] ||'',
-     thirdName:SiteenginnerTrim[2] ||'',
-     LastName:SiteenginnerTrim[3] ||'',
-     email: siteEngineer.email,
-     phoneNumber: siteEngineer.phoneNumber,
-     address:siteEngineer.address,
-     nationalNumber: siteEngineer.nationalNumber,
-   hireDate: siteEngineer.hireDate?.toISOString().split('T')[0] || '',
-   })
- }
-},[siteEngineer,reset])
-
+  useEffect(() => {
+    if (siteEngineer) {
+      reset({
+        id: siteEngineer.id,
+        firstName: SiteenginnerTrim[0] || '',
+        secondName: SiteenginnerTrim[1] || '',
+        thirdName: SiteenginnerTrim[2] || '',
+        LastName: SiteenginnerTrim[3] || '',
+        email: siteEngineer.email,
+        phoneNumber: siteEngineer.phoneNumber,
+        address: siteEngineer.address,
+        nationalNumber: siteEngineer.nationalNumber,
+        hireDate: siteEngineer.hireDate?.toISOString().split('T')[0] || '',
+      });
+    }
+  }, [siteEngineer, reset]);
 
   const handelUpdateSiteEngineer = (data) => {
-     updateSiteEngineer.mutate(data);
+    updateSiteEngineer.mutate(data);
     reset();
   };
 
@@ -52,68 +56,68 @@ useEffect(()=>{
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
               <div className="bg-white p-4 rounded-t-lg">
                 <h2 className="text-xl font-bold text-center bg-blue-500 text-white px-4 py-2 rounded-lg mb-0 hover:bg-blue-600 transition-all">
-                  {title }
+                  {title}
                 </h2>
               </div>
               <div className="p-6 bg-white rounded-b-lg">
                 <form onSubmit={handleSubmit(handelUpdateSiteEngineer)}>
-                     <div className='flex justify-between gap-4'>
-                     <FieldInput
-                    id="firstName"
-                    label="الاسم الاول"
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    placeholder="الاسم الاول"
-                  />
-                     <FieldInput
-                    id="secondName"
-                    label="الاسم الثاني"
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    placeholder="الاسم الثاني"/>           
-                     </div>
-                  
-                     <div className='flex justify-between gap-4'>
-                     <FieldInput
-                    id="thirdName"
-                    label="الاسم الثالث"
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    placeholder="الاسم الثالث"
-                  />
-                     <FieldInput
-                    id="LastName"
-                    label="اسم القبيله "
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    placeholder="اسم القبيله "
-                  /> </div>
-                  
-                   
-                   <div className='flex justify-between gap-4'>
+                  <div className="flex justify-between gap-4">
+                    <FieldInput
+                      id="firstName"
+                      label="الاسم الاول"
+                      type="text"
+                      register={register}
+                      errors={errors}
+                      placeholder="الاسم الاول"
+                    />
+                    <FieldInput
+                      id="secondName"
+                      label="الاسم الثاني"
+                      type="text"
+                      register={register}
+                      errors={errors}
+                      placeholder="الاسم الثاني"
+                    />
+                  </div>
 
-                   <FieldInput
-                    id="phoneNumber"
-                    label="رقم الهاتف"
-                    type="tel"
-                    register={register}
-                    errors={errors}
-                    placeholder="73XXXXXXX"
-                  />
-                   <FieldInput
-                    id="nationalNumber"
-                    label="الرقم الوطني  "
-                    type="text"
-                    register={register}
-                    errors={errors}
-                    placeholder="ادخل الرقم الوطني"
-                  />
-                   </div>
-                   <FieldInput
+                  <div className="flex justify-between gap-4">
+                    <FieldInput
+                      id="thirdName"
+                      label="الاسم الثالث"
+                      type="text"
+                      register={register}
+                      errors={errors}
+                      placeholder="الاسم الثالث"
+                    />
+                    <FieldInput
+                      id="LastName"
+                      label="اسم القبيله "
+                      type="text"
+                      register={register}
+                      errors={errors}
+                      placeholder="اسم القبيله "
+                    />{' '}
+                  </div>
+
+                  <div className="flex justify-between gap-4">
+                    <FieldInput
+                      id="phoneNumber"
+                      label="رقم الهاتف"
+                      type="tel"
+                      register={register}
+                      errors={errors}
+                      placeholder="73XXXXXXX"
+                    />
+                    <FieldInput
+                      id="nationalNumber"
+                      label="الرقم الوطني  "
+                      type="text"
+                      register={register}
+                      errors={errors}
+                      placeholder="ادخل الرقم الوطني"
+                    />
+                  </div>
+                  <FieldInput
                     id="email"
                     label="الايميل "
                     type="tel"
@@ -121,26 +125,25 @@ useEffect(()=>{
                     errors={errors}
                     placeholder="example@gmail.com"
                   />
-                  <div className='flex justify-between gap-4'>
-                  <FieldInput
-                    id="address"
-                    label="العنوان "
-                    type="tel"
-                    register={register}
-                    errors={errors}
-                    placeholder="العنوان"
-                  />
-                  
-                  <FieldInput
-                    id="hireDate"
-                    label="تاريخ التقديم "
-                    type="date"
-                    register={register}
-                    errors={errors}
-                    placeholder="تاريخ التقديم "
-                  />
-                  </div>
+                  <div className="flex justify-between gap-4">
+                    <FieldInput
+                      id="address"
+                      label="العنوان "
+                      type="tel"
+                      register={register}
+                      errors={errors}
+                      placeholder="العنوان"
+                    />
 
+                    <FieldInput
+                      id="hireDate"
+                      label="تاريخ التقديم "
+                      type="date"
+                      register={register}
+                      errors={errors}
+                      placeholder="تاريخ التقديم "
+                    />
+                  </div>
 
                   <div className="flex justify-end space-x-4">
                     <button
@@ -156,7 +159,7 @@ useEffect(()=>{
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
                       disabled={updateSiteEngineer.isPending}
                     >
-                      تعديل 
+                      تعديل
                     </button>
                   </div>
                 </form>
@@ -170,4 +173,3 @@ useEffect(()=>{
 };
 
 export default UpdateSiteEngineer;
-
