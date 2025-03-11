@@ -1,14 +1,17 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import FieldInput from "../FieldInput";
 import { useUpdateWorker } from "../../queries/workerQuery";
 // import FieldSelect from "../FieldSelect";
 import FieldRadio from "../FieldRadio";
+import { useGetWorkerSpecialties } from "@/queries/workerSpecialtiesQuery";
 // import { useGetWorkerSpecialties } from "../../queries/workerSpecialtiesQuery";
-import WorkerSpecialties from "../../WorkerSpecialties";
-const UpdateWorker = ({ isOpen, closeForm, schema, title, worker }) => {
+// import WorkerSpecialties from "./WorkerSpecialties";
+const UpdateWorker = ({ isOpen, closeForm, schema, title, Worker }) => {
+  const { data: special } = useGetWorkerSpecialties();
+  const [idSpecial, setIdSpecial] = useState();
   const updateWorkerMutation = useUpdateWorker();
   const {
     register,
@@ -20,36 +23,32 @@ const UpdateWorker = ({ isOpen, closeForm, schema, title, worker }) => {
   });
 
   useEffect(() => {
-    if (worker) {
+    console.log(Worker);
+    if (Worker) {
       reset({
-        id: worker.id,
-        firstName: worker.firstName,
-        secondName: worker.secondName,
-        thirdName: worker.thirdName,
-        lastName: worker.lastName,
-        email: worker.email,
-        phoneNumber: worker.phoneNumber,
-        nationalNumber: worker.nationalNumber,
-        specialty: worker.specialty,
-        isAvailable: worker.isAvailable === 1 ? "متاح" : "غير متاح",
+        id: Worker.id,
+        fullName: Worker.fullName,
+        email: Worker.email,
+        phoneNumber: Worker.phoneNumber,
       });
     }
-  }, [worker, reset]);
+  }, [Worker, reset]);
   const handelUpdateWorker = (data) => {
     const mappedData = {
       ...data,
+      specialtyId: parseInt(idSpecial),
+
       isAvailable: data.isAvailable === "متاح" ? 1 : 2,
     };
     updateWorkerMutation.mutate(mappedData);
     reset();
   };
-
   return (
     <>
       {isOpen && (
         <>
           {/* الخلفية المعتمة */}
-          <div className="fixed inset-0 bg-opacity-20 backdrop-blur-xs z-20"></div>
+          <div className="fixed inset-0 bg-opacity-20 backdrop-blur-xl z-20"></div>
 
           {/* النموذج */}
           <div className="fixed inset-0 flex items-center justify-center z-30">
@@ -127,9 +126,29 @@ const UpdateWorker = ({ isOpen, closeForm, schema, title, worker }) => {
                         errors={errors}
                         placeholder="الرقم الوطني"
                       />
-                      <>
-                        <WorkerSpecialties />
-                      </>
+                      <FieldInput
+                        id="address"
+                        label="العنوان"
+                        type="text"
+                        register={register}
+                        errors={errors}
+                        placeholder="العنوان"
+                      />
+
+                      <div>
+                        <select
+                          onChange={(e) => setIdSpecial(e.target.value)}
+                          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                        >
+                          <option value="">اختر التخصص</option>
+
+                          {special?.data?.map((specialty) => (
+                            <option key={specialty.id} value={specialty.id}>
+                              {specialty.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
 
                       <FieldRadio
                         name="isAvailable"

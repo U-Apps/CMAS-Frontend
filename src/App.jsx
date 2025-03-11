@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "sonner";
+// import Clients from "./pages/client";
 import Workers from "./pages/worker";
 
 function App() {

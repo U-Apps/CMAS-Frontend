@@ -1,28 +1,29 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   getWorkers,
-  registerWorker,
+  createWorker,
   updateWorker,
   deleteWorker,
-  getWorkerById,
 } from "../API/workerAPI";
 import { toast } from "sonner";
-import useStore from "../store/worker-index";
+import useStore from "../store";
 
-export function useGetWorkers(pageNumber) {
+export function useGetWorkers(params) {
   return useQuery({
-    queryKey: ["workers", pageNumber],
-    queryFn: () => getWorkers(pageNumber),
+    queryKey: ["workers", params],
+    queryFn: () => getWorkers({ ...params, pageSize: 10 }),
     staleTime: 600000,
     cacheTime: 1800000,
+    keepPreviousData: true,
   });
 }
+// //|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 export function useRegisterWorker() {
   const { closeAddFormWorker, pageWorker } = useStore();
   const queryWorker = useQueryClient();
 
   return useMutation({
-    mutationFn: (data) => registerWorker(data),
+    mutationFn: (data) => createWorker(data),
 
     onSettled: async () => {
       await queryWorker.invalidateQueries({
@@ -33,7 +34,8 @@ export function useRegisterWorker() {
       toast.success("تمت الإضافة بنجاح");
       closeAddFormWorker();
     },
-    onError: () => {
+    onError: (err) => {
+      //   console.log(err.response.config);
       toast.error("حدث خطأ ما");
     },
   });
@@ -80,11 +82,11 @@ export function useDeleteWorker() {
   });
 }
 
-export function useGetWorkerById(id) {
-  return useQuery({
-    queryKey: ["Worker", id],
-    queryFn: () => getWorkerById(id),
-    staleTime: 600000,
-    cacheTime: 1800000,
-  });
-}
+// export function useGetWorkerById(id) {
+//   return useQuery({
+//     queryKey: ["Worker", id],
+//     queryFn: () => getWorkerById(id),
+//     staleTime: 600000,
+//     cacheTime: 1800000,
+//   });
+// }
