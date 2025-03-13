@@ -1,26 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import { useGetClients } from '../queries/clientQuery';
 import useStore from '../store';
-import FormClient from '../components/client/FormClient';
-import UpdateClient from '../components/client/UpdateClient';
-import {
-  addClientSchema,
-  updateClientSchema,
-} from '../validations/client.schema';
+import FormClient from '../components/client/ClientForm';
+import { clientSchema } from '../validations/client.schema';
 import DeleteClient from '../components/client/DeleteClient';
-
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from '@/components/ui/pagination';
 const Clients = () => {
-  const {
-    activeModal,
-    openModal,
-    closeModal,
-    pageClient,
-    setPageClient,
-    setSelectedClient,
-    selectedClient,
-    clearSelectedClient,
-  } = useStore();
+  const { activeModal, openModal, closeModal } = useStore();
 
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [pageClient, setPageClient] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [clientType, setClientType] = useState(null);
@@ -41,19 +37,7 @@ const Clients = () => {
   });
 
   const clientsData = clients?.data?.items || [];
-  const totalCount = clients?.data?.totalCount;
-
-  const handleNextPage = () => {
-    if (pageClient * 10 < totalCount) {
-      setPageClient(pageClient + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (pageClient > 1) {
-      setPageClient(pageClient - 1);
-    }
-  };
+  const totalPages = clients?.data?.totalPages || 1;
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value.trim());
@@ -76,8 +60,7 @@ const Clients = () => {
   };
   const handelUpdate = (data) => {
     setSelectedClient(data);
-    console.log(data);
-    openModal('updateClient');
+    openModal('openForm');
   };
 
   const handelDelete = (id) => {
@@ -119,24 +102,17 @@ const Clients = () => {
 
       <div className="relative flex justify-end mb-4">
         <button
-          onClick={openModal.bind(null, 'addClient')}
+          onClick={openModal.bind(null, 'openForm')}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
         <FormClient
-          isOpen={activeModal === 'addClient'}
+          isOpen={activeModal === 'openForm'}
           closeForm={closeModal}
-          schema={addClientSchema}
-          title="إضافة عميل"
-        />
-        <UpdateClient
+          schema={clientSchema}
           client={selectedClient}
-          clear={clearSelectedClient}
-          isOpen={activeModal === 'updateClient'}
-          closeForm={closeModal}
-          schema={updateClientSchema}
-          title="تعديل عميل"
+          clear={setSelectedClient}
         />
         <DeleteClient
           client={selectedClient}
@@ -206,30 +182,33 @@ const Clients = () => {
         </tbody>
       </table>
 
-      <div className="flex justify-between mt-4">
-        <button
-          onClick={handlePreviousPage}
-          disabled={pageClient === 1 || isLoading}
-          className={`px-4 py-2 rounded ${
-            pageClient === 1 || isLoading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-        >
-          السابق
-        </button>
-        <button
-          onClick={handleNextPage}
-          disabled={pageClient * 10 >= totalCount || isLoading}
-          className={`px-4 py-2 rounded ${
-            pageClient * 10 >= totalCount || isLoading
-              ? 'bg-gray-300 cursor-not-allowed'
-              : 'bg-blue-500 text-white hover:bg-blue-600'
-          }`}
-        >
-          التالي
-        </button>
-      </div>
+      <Pagination className="mt-4 flex justify-center">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              href="#"
+              onClick={() => setPageClient((prev) => Math.max(prev - 1, 1))}
+              disabled={pageClient === 1}
+            />
+          </PaginationItem>
+          {[...Array(totalPages)].map((_, index) => (
+            <PaginationItem key={index}>
+              <PaginationLink href="#" onClick={() => setPageClient(index + 1)}>
+                {index + 1}
+              </PaginationLink>
+            </PaginationItem>
+          ))}
+          <PaginationItem>
+            <PaginationNext
+              href="#"
+              onClick={() =>
+                setPageClient((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={pageClient >= totalPages}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   );
 };

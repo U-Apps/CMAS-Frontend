@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-const FieldRadio = ({ label, options, register, errors, name, value }) => (
+const FieldRadio = ({ label, options, register, errors, name }) => (
   <fieldset className="mb-4 text-right">
     <legend className="block text-sm font-medium text-gray-700 mb-1">
       {label}
@@ -7,13 +7,7 @@ const FieldRadio = ({ label, options, register, errors, name, value }) => (
     <div className="flex flex-col space-y-2">
       {options.map((option, idx) => (
         <label key={idx} className="flex items-center justify-start gap-2">
-          <input
-            name={name}
-            type="radio"
-            value={option}
-            {...register(name)}
-            defaultChecked={value === option}
-          />
+          <input name={name} type="radio" value={option} {...register(name)} />
           <span className="mb-1">{option}</span>
         </label>
       ))}

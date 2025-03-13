@@ -1,7 +1,6 @@
 import api from "@/lib/apiCall";
-
 export async function GetEngineer(params){
-    const respons= await  api.get('/api/v1/SiteEngineers', params);
+    const respons= await api.get('/api/v1/SiteEngineers',{params});
     return respons.data;
 }
 

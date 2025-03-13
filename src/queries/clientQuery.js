@@ -66,7 +66,6 @@ export function useUpdateClient() {
 export function useDeleteClient() {
   const { closeModal, pageClient } = useStore();
   const queryClient = useQueryClient();
-
   return useMutation({
     mutationFn: (id) => deleteClient(id),
     onSettled: async () => {

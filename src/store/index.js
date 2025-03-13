@@ -9,7 +9,6 @@ const useStore = create(
     (set) => ({
       ...createClientSlice(set),
       ...createModalSlice(set),
-      ...createWorkerSlice(set),
     }),
     {
       name: "app-state",

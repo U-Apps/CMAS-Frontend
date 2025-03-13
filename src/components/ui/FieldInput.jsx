@@ -3,15 +3,15 @@ const FieldInput = ({
   id,
   label,
   value,
-  type = "text",
+  type = 'text',
   register,
   errors,
   placeholder,
 }) => (
-  <div className="mb-4">
+  <div className="mb-2">
     <label
       htmlFor={id}
-      className="block text-sm font-medium text-gray-700 mb-4 text-right"
+      className="block text-sm font-medium text-gray-700 mb-2 text-right"
     >
       {label}
     </label>

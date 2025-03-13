@@ -1,29 +1,26 @@
 import { useEffect, useRef, useState } from 'react';
 import useStore from '../store';
-import FormClient from '../components/client/FormClient';
-import UpdateClient from '../components/client/UpdateClient';
-import {
-  addClientSchema,
-  updateClientSchema,
-} from '../validations/client.schema';
-import DeleteClient from '../components/client/DeleteClient';
 import { useGetSiteEngineer } from '@/queries/SiteEngineerQueries';
-
+import DeleteSiteEngineer from '@/components/siteEngineer/DeleteSiteEngineer';
+import FormSiteEngineer from '@/components/siteEngineer/FormSiteEngineer';
+import { SiteEngineerAddingFormSchema } from '@/validations/siteEngineer.schema';
+import UpdateSiteEngineer from '../components/siteEngineer/UpdateSiteEngineer';
+import useSiteEngineerStore from '@/store/siteEngineer';
 const SiteEngineer = () => {
-  const {
-    activeModal,
-    openModal,
-    closeModal,
-    pageClient,
-    setPageClient,
-    setSelectedClient,
-    selectedClient,
-    clearSelectedClient,
-  } = useStore();
+  // const {
+  //   activeModal,
+  //   openModal,
+  //   closeModal,
+  //   pageClient,
+  //   setPageClient,
+  //   setSelectedClient,
+  //   selectedClient,
+  //   clearSelectedClient,
+  // } = useStore();
 
+const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, selectedSiteEngineer,setSelectedSiteEngineer}=useSiteEngineerStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
-  const [clientType, setClientType] = useState(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
@@ -35,27 +32,29 @@ const SiteEngineer = () => {
   }, [searchTerm]);
 
   const { data: siteEngineer, isLoading } = useGetSiteEngineer({
-    pageNumber: pageClient,
+    pageNumber: pageSiteEngineer,
     searchTerm: debouncedSearch,
   });
 
   const siteEngineerData = siteEngineer?.data?.items || [];
-  const totalCount = siteEngineer?.data?.totalCount;
-
+  const totalCount = siteEngineer?.data?.totalPages;
   const handleNextPage = () => {
-    if (pageClient * 10 < totalCount) {
-      setPageClient(pageClient + 1);
+    if (pageSiteEngineer  < totalCount) {
+      setPageSiteEngineer(pageSiteEngineer + 1);
+      console.log(pageSiteEngineer);
     }
+   
   };
 
   const handlePreviousPage = () => {
-    if (pageClient > 1) {
-      setPageClient(pageClient - 1);
+    if (pageSiteEngineer > 1) {
+      setPageSiteEngineer(pageSiteEngineer - 1);
     }
   };
 
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value.trim());
+
   };
 
   const handleClearSearch = () => {
@@ -68,14 +67,13 @@ const SiteEngineer = () => {
   };
 
   const handelUpdate = (data) => {
-    setSelectedClient(data);
-    console.log(data);
-    openModal('updateClient');
+    setSelectedSiteEngineer(data)
+    openModal('UpdateSiteEngineer');
   };
 
   const handelDelete = (id) => {
-    setSelectedClient(id);
-    openModal('deleteClient');
+    setSelectedSiteEngineer(id);
+    openModal('DeleteSiteEngineer');
   };
 
   return (
@@ -103,28 +101,27 @@ const SiteEngineer = () => {
 
       <div className="relative flex justify-end mb-4">
         <button
-          onClick={openModal.bind(null, 'addClient')}
+          onClick={openModal.bind(null, 'FormSiteEngineer')}
           className="bg-blue-500 text-white p-2 rounded-md"
         >
           إضافة بيانات
         </button>
-        <FormClient
-          isOpen={activeModal === 'addClient'}
+        <FormSiteEngineer
+          isOpen={activeModal === 'FormSiteEngineer'}
           closeForm={closeModal}
-          schema={addClientSchema}
+          schema={SiteEngineerAddingFormSchema}
           title="إضافة عميل"
         />
-        <UpdateClient
-          client={selectedClient}
-          clear={clearSelectedClient}
-          isOpen={activeModal === 'updateClient'}
+        <UpdateSiteEngineer
+          siteEngineer={selectedSiteEngineer }
+          isOpen={activeModal === 'UpdateSiteEngineer'}
           closeForm={closeModal}
-          schema={updateClientSchema}
+          schema={SiteEngineerAddingFormSchema}
           title="تعديل عميل"
         />
-        <DeleteClient
-          client={selectedClient}
-          isOpen={activeModal === 'deleteClient'}
+        <DeleteSiteEngineer
+          siteEngineer={selectedSiteEngineer}
+          isOpen={activeModal === 'DeleteSiteEngineer'}
           closeForm={closeModal}
           title="حذف عميل"
         />
@@ -134,13 +131,11 @@ const SiteEngineer = () => {
         <thead>
           <tr className="bg-gray-100">
             <th className="border border-gray-300 px-4 py-2">الاسم الكامل</th>
-            <th className="border border-gray-300 px-4 py-2">
-              البريد الإلكتروني
-            </th>
+            <th className="border border-gray-300 px-4 py-2">لبريد الإلكتروني </th>
             <th className="border border-gray-300 px-4 py-2">رقم الهاتف</th>
             <th className="border border-gray-300 px-4 py-2">العنوان </th>
             <th className="border border-gray-300 px-4 py-2">الحاله</th>
-            <th className="border border-gray-300 px-4 py-2">الحاله</th> 
+            <th className="border border-gray-300 px-4 py-2">الاجراءات</th> 
           </tr>
         </thead>
         <tbody>
@@ -197,9 +192,9 @@ const SiteEngineer = () => {
       <div className="flex justify-between mt-4">
         <button
           onClick={handlePreviousPage}
-          disabled={pageClient === 1 || isLoading}
+          disabled={pageSiteEngineer === 1 || isLoading}
           className={`px-4 py-2 rounded ${
-            pageClient === 1 || isLoading
+            pageSiteEngineer === 1 || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
@@ -208,9 +203,9 @@ const SiteEngineer = () => {
         </button>
         <button
           onClick={handleNextPage}
-          disabled={pageClient * 10 >= totalCount || isLoading}
+          disabled={pageSiteEngineer  >= totalCount || isLoading}
           className={`px-4 py-2 rounded ${
-            pageClient * 10 >= totalCount || isLoading
+            pageSiteEngineer  >= totalCount || isLoading
               ? 'bg-gray-300 cursor-not-allowed'
               : 'bg-blue-500 text-white hover:bg-blue-600'
           }`}
