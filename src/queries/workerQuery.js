@@ -30,9 +30,10 @@ export function useRegisterWorker() {
         queryKey: ["Workers", pageWorker],
       });
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("تمت الإضافة بنجاح");
       closeAddFormWorker();
+      return data;
     },
     onError: (err) => {
       //   console.log(err.response.config);
