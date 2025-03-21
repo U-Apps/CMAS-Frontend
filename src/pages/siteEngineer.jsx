@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import useStore from '../store';
 import { useGetSiteEngineer } from '@/queries/SiteEngineerQueries';
 import DeleteSiteEngineer from '@/components/siteEngineer/DeleteSiteEngineer';
 import FormSiteEngineer from '@/components/siteEngineer/FormSiteEngineer';
 import { SiteEngineerAddingFormSchema } from '@/validations/siteEngineer.schema';
-import UpdateSiteEngineer from '../components/siteEngineer/UpdateSiteEngineer';
 import useSiteEngineerStore from '@/store/siteEngineer';
 const SiteEngineer = () => {
   // const {
@@ -18,11 +16,11 @@ const SiteEngineer = () => {
   //   clearSelectedClient,
   // } = useStore();
 
-const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, selectedSiteEngineer,setSelectedSiteEngineer}=useSiteEngineerStore();
+const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer}=useSiteEngineerStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const inputRef = useRef(null);
-
+ const [selectedSiteEngineer,setSelectedSiteEngineer]=useState(null);
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchTerm);
@@ -36,7 +34,10 @@ const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, s
     searchTerm: debouncedSearch,
   });
 
+  
+
   const siteEngineerData = siteEngineer?.data?.items || [];
+  console.log(siteEngineerData);
   const totalCount = siteEngineer?.data?.totalPages;
   const handleNextPage = () => {
     if (pageSiteEngineer  < totalCount) {
@@ -75,7 +76,7 @@ const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, s
     setSelectedSiteEngineer(id);
     openModal('DeleteSiteEngineer');
   };
-
+console.log(selectedSiteEngineer);
   return (
     <div className="p-4">
       <h1 className="bg-blue-500 text-white px-4 py-2 rounded-lg text-center text-xl font-bold mb-4 hover:bg-blue-600 transition-all">
@@ -106,19 +107,21 @@ const {activeModal,openModal,closeModal,pageSiteEngineer, setPageSiteEngineer, s
         >
           إضافة بيانات
         </button>
-        <FormSiteEngineer
+       <FormSiteEngineer
           isOpen={activeModal === 'FormSiteEngineer'}
           closeForm={closeModal}
           schema={SiteEngineerAddingFormSchema}
-          title="إضافة عميل"
-        />
-        <UpdateSiteEngineer
+          siteEngineer={selectedSiteEngineer}
+          clear={setSelectedSiteEngineer}
+        /> 
+
+        {/* <UpdateSiteEngineer
           siteEngineer={selectedSiteEngineer }
           isOpen={activeModal === 'UpdateSiteEngineer'}
           closeForm={closeModal}
           schema={SiteEngineerAddingFormSchema}
           title="تعديل عميل"
-        />
+        /> */}
         <DeleteSiteEngineer
           siteEngineer={selectedSiteEngineer}
           isOpen={activeModal === 'DeleteSiteEngineer'}

@@ -3,6 +3,7 @@ import createClientSlice from "./client-slice";
 import { persist } from "zustand/middleware";
 import createModalSlice from "./modal-slice";
 import createWorkerSlice from "./worker-slice";
+import { createSiteEngineerSlice } from './siteEnginer-slice';
 
 const useStore = create(
   persist(
@@ -10,6 +11,7 @@ const useStore = create(
       ...createClientSlice(set),
       ...createModalSlice(set),
       ...createWorkerSlice(set),
+      ...createSiteEngineerSlice(set),
     }),
     {
       name: "app-state",

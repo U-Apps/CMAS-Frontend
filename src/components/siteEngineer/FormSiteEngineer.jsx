@@ -2,11 +2,16 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FieldInput from '../ui/FieldInput';
-import { useCreateClient } from '../../queries/clientQuery';
 import { useCreateSiteEngineer } from '@/queries/SiteEngineerQueries';
+import { useUpdateSiteEngineer } from '@/queries/SiteEngineerQueries';
+import { useEffect } from 'react';
 
-const FormSiteEngineer = ({ isOpen, closeForm, schema, title }) => {
+const FormSiteEngineer = ({ isOpen, closeForm, schema,siteEngineer,clear}) => {
   const createSiteEngineertMutation = useCreateSiteEngineer();
+  const UpdateSiteEngineerMuation=useUpdateSiteEngineer();
+const siteEng=siteEngineer?UpdateSiteEngineerMuation:createSiteEngineertMutation;
+
+  
   const {
     register,
     handleSubmit,
@@ -16,8 +21,42 @@ const FormSiteEngineer = ({ isOpen, closeForm, schema, title }) => {
     resolver: zodResolver(schema),
   });
 
+  const SiteenginnerTrim = siteEngineer?.fullName?.split(' ') || [];
+
+  useEffect(()=>{
+    
+    if (siteEng) {
+      reset({
+        id: siteEng.id,
+        firstName: SiteenginnerTrim[0] || '',
+        secondName: SiteenginnerTrim[1] || '',
+        thirdName: SiteenginnerTrim[2] || '',
+        LastName: SiteenginnerTrim[3] || '',
+        email: siteEng.email,
+        phoneNumber: siteEng.phoneNumber,
+        address: siteEng.address,
+        nationalNumber: siteEng.nationalNumber,
+        hireDate: siteEng.hireDate?.toISOString().split('T')[0] || '',
+      });
+    }else{
+      reset({
+        firstName: '',
+        secondName: '',
+        thirdName: '',
+        LastName: '',
+        email: '',
+        phoneNumber: '',
+        address: '',
+        nationalNumber: '',
+        hireDate: '',
+      });
+    }
+    
+  },[isOpen,register,siteEngineer])
+
+
   const handelAddSiteEngineer = (data) => {
-    createSiteEngineertMutation.mutate(data);
+    siteEng.mutate(data);
     reset();
     console.log(data);
   };
@@ -32,7 +71,7 @@ const FormSiteEngineer = ({ isOpen, closeForm, schema, title }) => {
             <div className="bg-white rounded-lg shadow-lg w-full max-w-md">
               <div className="bg-white p-4 rounded-t-lg">
                 <h2 className="text-xl font-bold text-center bg-blue-500 text-white px-4 py-2 rounded-lg mb-0 hover:bg-blue-600 transition-all">
-                  {title}
+                  {siteEngineer?'UpdateSiteEngineer':'AddingSiteEngineer'}
                 </h2>
               </div>
               <div className="p-6 bg-white rounded-b-lg">
@@ -126,18 +165,26 @@ const FormSiteEngineer = ({ isOpen, closeForm, schema, title }) => {
                   <div className="flex justify-end space-x-4">
                     <button
                       type="button"
-                      onClick={closeForm}
+                      
+                      onClick={()=>{
+                        closeForm();
+                        clear(null);
+                      }
+                      
+                      }
                       className="text-gray-700 bg-gray-200 px-4 py-2 rounded-md hover:bg-gray-300 transition ml-2"
-                      hidden={createSiteEngineertMutation.isPending}
+                      hidden={siteEng.isPending}
                     >
                       إلغاء
                     </button>
                     <button
                       type="submit"
                       className="bg-blue-500 text-white px-6 py-2 rounded-md hover:bg-blue-600 transition"
-                      disabled={createSiteEngineertMutation.isPending}
+                      disabled={siteEng.isPending}
                     >
-                      حفظ
+                      {
+                        siteEng?'تعديل':'حفظ' 
+                      }
                     </button>
                   </div>
                 </form>
