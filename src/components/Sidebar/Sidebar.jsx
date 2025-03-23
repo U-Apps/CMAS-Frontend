@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import {
   Home,
   CreditCard,
@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 
 const Sidebar = () => {
-  const [active, setActive] = useState("البطاقات");
   const [isOpen, setIsOpen] = useState(true);
 
   const menuItems = [
@@ -26,12 +25,12 @@ const Sidebar = () => {
   ];
 
   const pages = [
-    { name: "العملاء", icon: Users, path: "/clients" },
-    { name: "المهندس الميداني", icon: HardHat, path: "/site-engineer" },
-    { name: "الأعمال", icon: Briefcase, path: "/works" },
-    { name: "المشاريع", icon: Folder, path: "/projects" },
-    { name: "التواصل", icon: Camera, path: "/contact" },
-    { name: "من نحن", icon: Info, path: "/about-us" },
+    { name: "العملاء", icon: Users, path: "/pages/clients" },
+    { name: "المهندس الميداني", icon: HardHat, path: "/pages/site-engineer" },
+    { name: "الأعمال", icon: Briefcase, path: "pages/works" },
+    { name: "المشاريع", icon: Folder, path: "pages/projects" },
+    { name: "التواصل", icon: Camera, path: "pages/contact" },
+    { name: "من نحن", icon: Info, path: "pages/about-us" },
   ];
 
   return (
@@ -53,18 +52,18 @@ const Sidebar = () => {
         </h1>
         <nav>
           {menuItems.map(({ name, icon: Icon, path }) => (
-            <Link
+            <NavLink
               to={path}
               key={name}
-              className={`flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 ${
-                active === name ? "bg-blue-500 text-white" : "hover:bg-gray-200"
-              }`}
-              onClick={() => setActive(name)}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 ${
+                  isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
-              <Icon className="ml-2" /> {/* الأيقونة على اليمين */}
-              {isOpen && <span className="mr-2">{name}</span>}{" "}
-              {/* النص على اليسار */}
-            </Link>
+              <Icon className="ml-2" />
+              {isOpen && <span className="mr-2">{name}</span>}
+            </NavLink>
           ))}
         </nav>
         <hr className="my-4" />
@@ -77,34 +76,43 @@ const Sidebar = () => {
         </span>
         <nav>
           {pages.map(({ name, icon: Icon, path }) => (
-            <Link
+            <NavLink
               to={path}
               key={name}
-              className="flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 hover:bg-gray-200"
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 ${
+                  isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+                }`
+              }
             >
-              <Icon className="ml-2" /> {/* الأيقونة على اليمين */}
-              {isOpen && <span className="mr-2">{name}</span>}{" "}
-              {/* النص على اليسار */}
-            </Link>
+              <Icon className="ml-2" />
+              {isOpen && <span className="mr-2">{name}</span>}
+            </NavLink>
           ))}
         </nav>
         <div className="mt-auto">
-          <Link
+          <NavLink
             to="/settings"
-            className="flex items-center px-4 py-2 w-full text-right rounded-lg hover:bg-gray-200"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-2 w-full text-right rounded-lg ${
+                isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
+              }`
+            }
           >
-            <Settings className="ml-2" /> {/* الأيقونة على اليمين */}
-            {isOpen && <span className="mr-2">الإعدادات</span>}{" "}
-            {/* النص على اليسار */}
-          </Link>
-          <Link
+            <Settings className="ml-2" />
+            {isOpen && <span className="mr-2">الإعدادات</span>}
+          </NavLink>
+          <NavLink
             to="/logout"
-            className="flex items-center px-4 py-2 w-full text-right rounded-lg hover:bg-gray-200 text-red-600"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-2 w-full text-right rounded-lg text-red-600 ${
+                isActive ? "bg-red-500 text-white" : "hover:bg-gray-200"
+              }`
+            }
           >
-            <LogOut className="ml-2" /> {/* الأيقونة على اليمين */}
-            {isOpen && <span className="mr-2">تسجيل الخروج</span>}{" "}
-            {/* النص على اليسار */}
-          </Link>
+            <LogOut className="ml-2" />
+            {isOpen && <span className="mr-2">تسجيل الخروج</span>}
+          </NavLink>
         </div>
       </div>
     </div>

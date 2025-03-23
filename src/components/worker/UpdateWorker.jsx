@@ -2,10 +2,10 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import FieldInput from "../FieldInput";
+import FieldInput from "../ui/FieldInput";
 import { useUpdateWorker } from "../../queries/workerQuery";
 // import FieldSelect from "../FieldSelect";
-import FieldRadio from "../FieldRadio";
+import FieldRadio from "../ui/FieldRadio";
 import { useGetWorkerSpecialties } from "@/queries/workerSpecialtiesQuery";
 // import { useGetWorkerSpecialties } from "../../queries/workerSpecialtiesQuery";
 // import WorkerSpecialties from "./WorkerSpecialties";

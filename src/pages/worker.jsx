@@ -7,7 +7,7 @@ import { workerSchema } from "../validations/worker.schema";
 import DeleteWorker from "../components/worker/DeleteWorker";
 import SearchInput from "../components/ui/SearchInput";
 import { useEffect, useRef, useState } from "react";
-import WorkersTable from "../components/worker/WorkersTable";
+// import WorkersTable from "../components/worker/WorkersTable";
 
 const Workers = () => {
   const {
@@ -24,7 +24,7 @@ const Workers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [isAvailable, setisAvailable] = useState(null);
-  const inputRef = useRef(null);
+  //   const inputRef = useRef(null);
   console.log(selectedWorker);
   useEffect(() => {
     const timer = setTimeout(() => {

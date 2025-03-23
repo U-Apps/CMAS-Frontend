@@ -1,10 +1,10 @@
 /* eslint-disable react/prop-types */
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FieldInput from "../FieldInput";
+import FieldInput from "../ui/FieldInput";
 import { useRegisterWorker } from "../../queries/workerQuery";
 // import FieldSelect from "../FieldSelect";
-import FieldRadio from "../FieldRadio";
+import FieldRadio from "../ui/FieldRadio";
 import { useGetWorkerSpecialties } from "@/queries/workerSpecialtiesQuery";
 import { useEffect, useState } from "react";
 
