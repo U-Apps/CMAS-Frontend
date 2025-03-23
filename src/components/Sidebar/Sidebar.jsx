@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { NavLink } from "react-router-dom";
 import {
   Home,
@@ -10,39 +10,53 @@ import {
   Folder,
   Info,
   Camera,
-  Briefcase,
   HardHat,
+  UserCheck,
   Menu,
 } from "lucide-react";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(true);
 
-  const menuItems = [
-    { name: "الرئيسية", icon: Home, path: "/dashboard" },
-    { name: "البطاقات", icon: CreditCard, path: "/cards" },
-    { name: "المجالس", icon: Heart, path: "/boards" },
-  ];
+  const menuItems = useMemo(
+    () => [
+      { name: "الرئيسية", icon: Home, path: "/dashboard" },
+      { name: "البطاقات", icon: CreditCard, path: "/cards" },
+      { name: "المجالس", icon: Heart, path: "/boards" },
+    ],
+    []
+  );
 
-  const pages = [
-    { name: "العملاء", icon: Users, path: "/pages/clients" },
-    { name: "المهندس الميداني", icon: HardHat, path: "/pages/site-engineer" },
-    { name: "الأعمال", icon: Briefcase, path: "pages/works" },
-    { name: "المشاريع", icon: Folder, path: "pages/projects" },
-    { name: "التواصل", icon: Camera, path: "pages/contact" },
-    { name: "من نحن", icon: Info, path: "pages/about-us" },
-  ];
+  const pages = useMemo(
+    () => [
+      { name: "العملاء", icon: Users, path: "clients" },
+      { name: "المهندس الميداني", icon: HardHat, path: "site-engineer" },
+      { name: "العمال", icon: UserCheck, path: "worker" },
+      { name: "المشاريع", icon: Folder, path: "projects" },
+      { name: "التواصل", icon: Camera, path: "contact" },
+      { name: "من نحن", icon: Info, path: "about-us" },
+    ],
+    []
+  );
 
   return (
-    <div className="flex flex-row-reverse">
-      <button className="p-2 md:hidden" onClick={() => setIsOpen(!isOpen)}>
+    <>
+      {/* زر القائمة للجوال */}
+      <button
+        className="p-2 md:hidden fixed right-4 top-4 z-50 bg-white rounded-lg shadow-lg"
+        onClick={() => setIsOpen(!isOpen)}
+      >
         <Menu />
       </button>
+
+      {/* الشريط الجانبي */}
       <div
-        className={`${
-          isOpen ? "w-64" : "w-16"
-        } min-h-screen bg-white shadow-md p-4 flex flex-col transition-all duration-300 right-0 fixed`}
+        className={`fixed right-0 min-h-screen bg-white shadow-md p-4 flex flex-col transition-all duration-300 ${
+          isOpen ? "w-64" : "w-16 -right-16 md:-right-0"
+        }`}
+        style={{ direction: "rtl" }}
       >
+        {/* العنوان */}
         <h1
           className={`text-xl font-bold text-blue-600 mb-6 text-center ${
             !isOpen && "hidden"
@@ -50,11 +64,15 @@ const Sidebar = () => {
         >
           CM<span className="text-black">AS</span>
         </h1>
+
+        {/* القوائم */}
         <nav>
+          {/* القائمة الرئيسية */}
           {menuItems.map(({ name, icon: Icon, path }) => (
             <NavLink
-              to={path}
               key={name}
+              to={path}
+              end
               className={({ isActive }) =>
                 `flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 ${
                   isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
@@ -66,19 +84,22 @@ const Sidebar = () => {
             </NavLink>
           ))}
         </nav>
+
         <hr className="my-4" />
-        <span
-          className={`text-gray-400 text-sm mb-2 text-center ${
-            !isOpen && "hidden"
-          }`}
-        >
-          الصفحات
-        </span>
+
+        {/* صفحات إضافية */}
+        {isOpen && (
+          <span className="text-gray-400 text-sm mb-2 text-center">
+            الصفحات
+          </span>
+        )}
+
         <nav>
           {pages.map(({ name, icon: Icon, path }) => (
             <NavLink
-              to={path}
               key={name}
+              to={path}
+              end
               className={({ isActive }) =>
                 `flex items-center px-4 py-2 w-full text-right rounded-lg mb-2 ${
                   isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
@@ -90,9 +111,12 @@ const Sidebar = () => {
             </NavLink>
           ))}
         </nav>
+
+        {/* الإعدادات وتسجيل الخروج */}
         <div className="mt-auto">
           <NavLink
             to="/settings"
+            end
             className={({ isActive }) =>
               `flex items-center px-4 py-2 w-full text-right rounded-lg ${
                 isActive ? "bg-blue-500 text-white" : "hover:bg-gray-200"
@@ -102,8 +126,10 @@ const Sidebar = () => {
             <Settings className="ml-2" />
             {isOpen && <span className="mr-2">الإعدادات</span>}
           </NavLink>
+
           <NavLink
             to="/logout"
+            end
             className={({ isActive }) =>
               `flex items-center px-4 py-2 w-full text-right rounded-lg text-red-600 ${
                 isActive ? "bg-red-500 text-white" : "hover:bg-gray-200"
@@ -115,7 +141,7 @@ const Sidebar = () => {
           </NavLink>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

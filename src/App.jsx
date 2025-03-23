@@ -1,25 +1,32 @@
-// import { Routes, Route, Navigate } from "react-router-dom";
-import { Toaster } from "sonner";
-// import Clients from "./pages/client";
-// import Workers from "./pages/worker";
-import Sidebar from "./components/Sidebar/Sidebar";
+// App.js
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "sonner";
+import Sidebar from "./components/Sidebar/Sidebar";
 import Client from "./pages/client";
-// import Project from "./pages/project";
-// import SiteEngineer from "./pages/siteEngineer";
 import Worker from "./pages/worker";
 
 function App() {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
-    <div className="flex">
-      <Sidebar />
-      <div className="flex-1 p-4">
+    <div className="flex min-h-screen">
+      <Sidebar
+        isOpen={isSidebarOpen}
+        onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
+      />
+
+      {/* المحتوى الرئيسي */}
+      <div
+        className={`flex-1 transition-all duration-300 p-4 ${
+          isSidebarOpen ? "md:mr-64" : "md:mr-16"
+        }`}
+      >
         <Routes>
-          <Route path="/pages/clients" element={<Client />} />
-          {/* <Route path="/pages/projects" element={<Project />} /> */}
-          {/* <Route path="/pages/site-engineer" element={<SiteEngineer />} /> */}
-          <Route path="/pages/works" element={<Worker />} />
+          <Route path="clients" element={<Client />} />
+          <Route path="worker" element={<Worker />} />
         </Routes>
+        <Toaster />
       </div>
     </div>
   );
